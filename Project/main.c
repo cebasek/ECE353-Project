@@ -21,6 +21,7 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
+#include "project_hardware_init.h"
 
 
 //*****************************************************************************
@@ -47,6 +48,13 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-
-    while(1){};
+	init_hardware();
+	
+	//Render instructions screen
+	lcd_draw_image(120, 120, 160, 160, space_shipBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
+	
+	//Wait for touch interrupt to go to level selections screen
+	
+	//Reach Infinite Loop
+	while(1){};
 }

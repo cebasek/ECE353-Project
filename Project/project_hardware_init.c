@@ -21,6 +21,17 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
+#include "serial_debug.h"
 
+void init_hardware(void)
+{
+	//UART0 DEBUG INIT
+	init_serial_debug(true, true);
 
+	
+	//LCD INIT
+  lcd_config_gpio();
+  lcd_config_screen();
+  lcd_clear_screen(LCD_COLOR_BLACK);   
+}
 
