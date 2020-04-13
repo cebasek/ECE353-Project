@@ -383,11 +383,6 @@
           <GroupName>src</GroupName>
           <Files>
             <File>
-              <FileName>project_images.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\peripherals\c\project_images.c</FilePath>
-            </File>
-            <File>
               <FileName>project_images.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\project_images.h</FilePath>
@@ -421,6 +416,11 @@
               <FileName>project_interrupts.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\project_interrupts.h</FilePath>
+            </File>
+            <File>
+              <FileName>project_images.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\project_images.c</FilePath>
             </File>
           </Files>
         </Group>
