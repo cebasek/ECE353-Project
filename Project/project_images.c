@@ -1,11 +1,12 @@
 #include "project_images.h"
+#include "stdint.h"
 
 // 
 //  Font data for Microsoft Sans Serif 8pt
 // 
 
 // Character bitmaps for Microsoft Sans Serif 8pt
-const unint_8 microsoftSansSerif_8ptBitmaps[] = 
+const uint8_t microsoftSansSerif_8ptBitmaps[] = 
 {
 	// @0 '!' (1 pixels wide)
 	0x80, // #
