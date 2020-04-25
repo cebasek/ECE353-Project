@@ -22,7 +22,7 @@
 
 #include "main.h"
 #include "project_hardware_init.h"
-#include "project_images.c"
+#include "project_images.h"
 
 
 //*****************************************************************************
@@ -49,10 +49,24 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
+	char welcome[] = "Welcome to Polar Plunge! Goal: avoid snowmen and tree stumps while trying to collect coins To play: Press the right button to jump and move the joystick left to slow down or right to speed up.";
+	int len = strlen(welcome);
+	int i;
+	
 	init_hardware();
 	
-	//Render instructions screen
-	lcd_draw_image(120, 120, 160, 160, microsoftSansSerif_8ptBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
+	
+	//Render instructions on screen character by character
+	for(i = 0; i < len; i++){
+		int descriptorOffset = welcome[i] - '!';
+		int bitmapOffset = microsoftSansSerif_8ptDescriptors[descriptorOffset].offset;
+		
+		int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
+		int height_pixels = 11;
+		
+		lcd_draw_image(0, width_bits, 0, height_pixels, &microsoftSansSerif_8ptBitmaps[bitmapOffset], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
+	}
+	//lcd_draw_image(16, 16, 16, 16, &microsoftSansSerif_8ptBitmaps[0], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
 	
 	//Wait for touch interrupt to go to level selections screen
 	
