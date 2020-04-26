@@ -66,8 +66,10 @@ for(i = 0; i < len; i++){
 
     int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
     int height_pixels = 11;
+	   
+	  lcd_draw_char(x_start, width_bits, y_start, height_pixels, microsoftSansSerif_8ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
+		x_start = x_start + 100;
 
-    lcd_draw_image(120, width_bits, 160, height_pixels, &microsoftSansSerif_8ptBitmaps[bitmapOffset], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK); //Not sure what x-start and y-start should be?
 }
 	
 	

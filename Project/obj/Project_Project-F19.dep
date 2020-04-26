@@ -1,6 +1,6 @@
 Dependencies for Project 'Project', Target 'Project-F19': (DO NOT MODIFY !)
 F (.\project_images.h)(0x5E9494A5)()
-F (.\main.c)(0x5EA4DD01)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-I.\RTE\_Project-F19-IC:\Users\Emily\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\Emily\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+F (.\main.c)(0x5EA4E217)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-I.\RTE\_Project-F19-IC:\Users\Emily\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\Emily\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
 I (main.h)(0x5E94620E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F83FC)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F83FE)
