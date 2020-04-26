@@ -27,3 +27,4 @@
 .\obj\main.o: project_hardware_init.h
 .\obj\main.o: project_images.h
 .\obj\main.o: bitmap_db.h
+.\obj\main.o: project.h
