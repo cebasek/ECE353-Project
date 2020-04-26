@@ -2,8 +2,6 @@
 #include "bitmap_db.h"
 
 
-// Font data for Microsoft Sans Serif 8pt
-extern const uint8_t microsoftSansSerif_8ptBitmaps[];
-extern const FONT_INFO microsoftSansSerif_8ptFontInfo;
-extern const FONT_CHAR_INFO microsoftSansSerif_8ptDescriptors[];
-
+extern const uint8_t lucidaCalligraphy_12ptBitmaps[];
+extern const FONT_INFO lucidaCalligraphy_12ptFontInfo;
+extern const FONT_CHAR_INFO lucidaCalligraphy_12ptDescriptors[];

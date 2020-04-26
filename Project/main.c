@@ -58,17 +58,28 @@ main(void)
 	bool game_over = false;
 	
 	init_hardware();
-	//lcd_draw_char(50, 20, 50, 20, bitmap, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
 
 for(i = 0; i < len; i++){
-    int descriptorOffset = welcome[i] - '!'; //'!' is my start character defined by the output
-    int bitmapOffset = microsoftSansSerif_8ptDescriptors[descriptorOffset].offset;
+	
+	  if(welcome[i] == ' '){
+			x_start = x_start + 2;
+		}
+		
+		else{
+		int descriptorOffset = welcome[i] - '!'; //'!' is my start character defined by the output
+    int bitmapOffset = lucidaCalligraphy_12ptDescriptors[descriptorOffset].offset;
 
-    int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
-    int height_pixels = 11;
+    int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
+    int height_pixels = 20;
 	   
-	  lcd_draw_char(x_start, width_bits, y_start, height_pixels, microsoftSansSerif_8ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
-		x_start = x_start + 100;
+	  lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, 0);
+		x_start = x_start + width_bits + 2;
+	
+		if(x_start >= 220){
+			x_start = 0;
+			y_start = y_start + 25;
+		}
+	 }
 
 }
 	

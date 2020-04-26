@@ -24,7 +24,8 @@
 
 //TIMER 2 ISR is triggered every 3 seconds and will add one point to the player's 
 void TIMER2A_Handler(void){
-	
+	// Clear the interrupt
+	TIMER2->ICR |= TIMER_ICR_TATOCINT;
 }
 
 
