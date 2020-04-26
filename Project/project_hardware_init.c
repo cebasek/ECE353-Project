@@ -37,7 +37,7 @@ void init_hardware(void)
 	//TIMERS INIT
 	//TIMER 2 - generates an interrupt every 3 second, giving the player one point
 	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1500000000, false, true);
-  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
-  gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true);
+  //gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
+  //gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true);
 }
 
