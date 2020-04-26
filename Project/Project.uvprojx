@@ -427,6 +427,16 @@
               <FileType>5</FileType>
               <FilePath>.\bitmap_db.h</FilePath>
             </File>
+            <File>
+              <FileName>project.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\project.c</FilePath>
+            </File>
+            <File>
+              <FileName>project.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\project.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

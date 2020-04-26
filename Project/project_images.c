@@ -757,5 +757,3 @@ const FONT_INFO lucidaCalligraphy_12ptFontInfo =
 	lucidaCalligraphy_12ptDescriptors, //  Character descriptor array
 	lucidaCalligraphy_12ptBitmaps, //  Character bitmap array
 };
-
-

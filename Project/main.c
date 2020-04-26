@@ -24,6 +24,8 @@
 #include "project_hardware_init.h"
 #include "project_images.h"
 
+#include "project.h" // Our project's main functions are here
+
 
 //*****************************************************************************
 //*****************************************************************************
@@ -49,40 +51,12 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-	char welcome[] = "Welcome to Polar Plunge! Goal: avoid snowmen and tree stumps while trying to collect coins To play: Press the right button to jump and move the joystick left to slow down or right to speed up.";
-	int len = strlen(welcome);
-	int i;
-	int x_start = 0;
-	int y_start = 0;
-
 	bool game_over = false;
 	
 	init_hardware();
-
-for(i = 0; i < len; i++){
 	
-	  if(welcome[i] == ' '){
-			x_start = x_start + 2;
-		}
-		
-		else{
-		int descriptorOffset = welcome[i] - '!'; //'!' is my start character defined by the output
-    int bitmapOffset = lucidaCalligraphy_12ptDescriptors[descriptorOffset].offset;
-
-    int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
-    int height_pixels = 20;
-	   
-	  lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, 0);
-		x_start = x_start + width_bits + 2;
-	
-		if(x_start >= 220){
-			x_start = 0;
-			y_start = y_start + 25;
-		}
-	 }
-
-}
-	
+	//Print welcome screen
+	print_welcome();
 	
 	//Wait for touch interrupt to go to level selections screen
 	
@@ -96,3 +70,4 @@ for(i = 0; i < len; i++){
 	//Reach Infinite Loop
 	while(1){};
 }
+
