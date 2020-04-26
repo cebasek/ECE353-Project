@@ -52,23 +52,33 @@ main(void)
 	char welcome[] = "Welcome to Polar Plunge! Goal: avoid snowmen and tree stumps while trying to collect coins To play: Press the right button to jump and move the joystick left to slow down or right to speed up.";
 	int len = strlen(welcome);
 	int i;
+	int x_start = 0;
+	int y_start = 0;
+
+	bool game_over = false;
 	
 	init_hardware();
+	//lcd_draw_char(50, 20, 50, 20, bitmap, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
+
+for(i = 0; i < len; i++){
+    int descriptorOffset = welcome[i] - '!'; //'!' is my start character defined by the output
+    int bitmapOffset = microsoftSansSerif_8ptDescriptors[descriptorOffset].offset;
+
+    int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
+    int height_pixels = 11;
+
+    lcd_draw_image(120, width_bits, 160, height_pixels, &microsoftSansSerif_8ptBitmaps[bitmapOffset], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK); //Not sure what x-start and y-start should be?
+}
 	
-	
-	//Render instructions on screen character by character
-	for(i = 0; i < len; i++){
-		int descriptorOffset = welcome[i] - '!';
-		int bitmapOffset = microsoftSansSerif_8ptDescriptors[descriptorOffset].offset;
-		
-		int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
-		int height_pixels = 11;
-		
-		lcd_draw_image(0, width_bits, 0, height_pixels, &microsoftSansSerif_8ptBitmaps[bitmapOffset], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
-	}
-	//lcd_draw_image(16, 16, 16, 16, &microsoftSansSerif_8ptBitmaps[0], LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
 	
 	//Wait for touch interrupt to go to level selections screen
+	
+	
+	
+	//Begin Game
+	while(!game_over){
+		
+	}
 	
 	//Reach Infinite Loop
 	while(1){};
