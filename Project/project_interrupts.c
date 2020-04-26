@@ -20,8 +20,12 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "main.h"
 #include "project_interrupts.h"
+
+//TIMER 2 ISR is triggered every 3 seconds and will add one point to the player's 
+void TIMER2A_Handler(void){
+	
+}
 
 
 

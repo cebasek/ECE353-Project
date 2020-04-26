@@ -22,7 +22,7 @@
 
 #include "main.h"
 #include "project_hardware_init.h"
-#include "project_images.c"
+#include "project_images.h"
 
 
 //*****************************************************************************
@@ -49,12 +49,38 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-	init_hardware();
+	char welcome[] = "Welcome to Polar Plunge! Goal: avoid snowmen and tree stumps while trying to collect coins To play: Press the right button to jump and move the joystick left to slow down or right to speed up.";
+	int len = strlen(welcome);
+	int i;
+	int x_start = 0;
+	int y_start = 0;
+
+	bool game_over = false;
 	
-	//Render instructions screen
-	lcd_draw_image(120, 120, 160, 160, microsoftSansSerif_8ptBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
+	init_hardware();
+	//lcd_draw_char(50, 20, 50, 20, bitmap, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
+
+for(i = 0; i < len; i++){
+    int descriptorOffset = welcome[i] - '!'; //'!' is my start character defined by the output
+    int bitmapOffset = microsoftSansSerif_8ptDescriptors[descriptorOffset].offset;
+
+    int width_bits = microsoftSansSerif_8ptDescriptors[descriptorOffset].widthBits;
+    int height_pixels = 11;
+	   
+	  lcd_draw_char(x_start, width_bits, y_start, height_pixels, microsoftSansSerif_8ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, ROUNDED_LEFT);
+		x_start = x_start + 100;
+
+}
+	
 	
 	//Wait for touch interrupt to go to level selections screen
+	
+	
+	
+	//Begin Game
+	while(!game_over){
+		
+	}
 	
 	//Reach Infinite Loop
 	while(1){};
