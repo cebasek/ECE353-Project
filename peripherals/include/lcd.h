@@ -52,7 +52,7 @@ typedef enum {
 #define LCD_COLOR_GREEN			0x07E0
 #define LCD_COLOR_GREEN2		0xB723
 #define LCD_COLOR_BLUE			0x001F
-#define LCD_COLOR_BLUE2			0x051D
+#define LCD_COLOR_BLUE2			0x051F
 #define LCD_COLOR_YELLOW		0xFFE0
 #define LCD_COLOR_ORANGE		0xFBE4
 #define LCD_COLOR_CYAN			0x07FF

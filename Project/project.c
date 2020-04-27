@@ -19,6 +19,9 @@ void print_welcome(){
 	int i, j, k;
 	int x_start = 0;
 	int y_start = 0;
+	
+//Start with blank blue screen
+lcd_clear_screen(LCD_COLOR_BLUE2);
 
 //Prints our welcome message in white
 for(i = 0; i < len_w; i++){
@@ -40,7 +43,7 @@ for(i = 0; i < len_w; i++){
 			int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 20;
 	   
-			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLACK, 0);
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
 			x_start = x_start + width_bits + 2;
 	
 			if(x_start >= 220){
@@ -71,7 +74,7 @@ for(j = 0; j < len_i; j++){
 			int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 20;
 	   
-			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, 0);
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 			x_start = x_start + width_bits + 2;
 	
 			if(x_start >= 220){
@@ -102,7 +105,7 @@ for(k = 0; k < len_c; k++){
 			int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 20;
 	   
-			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLACK, 0);
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
 			x_start = x_start + width_bits + 2;
 	
 			if(x_start >= 220){
@@ -120,7 +123,7 @@ void print_levels() {
 		touch_event = ft6x06_read_td_status();
 	
 		if (touch_event > 0) {
-			lcd_clear_screen(LCD_COLOR_BLACK);
+			lcd_clear_screen(LCD_COLOR_BLUE2);
 			lcd_draw_box(150, 80, 10, 25, LCD_COLOR_WHITE, LCD_COLOR_BLACK, 2);
 			break;
 		}
@@ -131,7 +134,7 @@ void game_main(void){
 	//If it's time to re-render the bear
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
-		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLUE2);
 	
 	}
 }
