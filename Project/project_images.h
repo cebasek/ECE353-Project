@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include "bitmap_db.h"
 
-//Bitmap info for welcome screen text
-// Font data for Lucida Calligraphy 12pt
-
+// Font data for Lucida Calligraphy 12pt for welcome screen text
 extern const uint8_t lucidaCalligraphy_12ptBitmaps[];
 extern const FONT_INFO lucidaCalligraphy_12ptFontInfo;
 extern const FONT_CHAR_INFO lucidaCalligraphy_12ptDescriptors[];
@@ -17,14 +15,14 @@ extern const uint8_t bearWidthPixels;
 extern const uint8_t bearHeightPixels;
 
 
-// Font data for Tahoma 28pt
+// Font data for Tahoma 28pt for GET READY
 extern const uint8_t tahoma_28ptBitmaps[];
 extern const FONT_INFO tahoma_28ptFontInfo;
 extern const FONT_CHAR_INFO tahoma_28ptDescriptors[];
 
-// Font data for Tahoma 36 pt for 3 in countdown
-extern const uint8_t tahoma_36ptBitmaps[];
-extern const FONT_INFO tahoma_36ptFontInfo;
-extern const FONT_CHAR_INFO tahoma_36ptDescriptors[];
+// Font data for Tahoma 48pt for countdown
+extern const uint8_t tahoma_48ptBitmaps[];
+extern const FONT_INFO tahoma_48ptFontInfo;
+extern const FONT_CHAR_INFO tahoma_48ptDescriptors[];
 
 #endif

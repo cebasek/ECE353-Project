@@ -122,10 +122,6 @@ for(k = 0; k < len_c; k++){
 void print_ready() {
 	uint8_t touch_event;
 	char get_ready[] = "GET READY!";
-	char countdown3[] = "3";
-	char countdown2[] = "2";
-	char countdown1[] = "1";
-	uint8_t current_message = 0;
 	int i;
 	int x_start = 20;
 	int y_start = 146;
@@ -148,27 +144,54 @@ void print_ready() {
 					int width_bits = tahoma_28ptDescriptors[descriptorOffset].widthBits;
 					int height_pixels = 28;
 				 
-					lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_28ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK, 0);
+					lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_28ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 					x_start = x_start + width_bits + 2;
 				}
-			}
-			current_message = 1;
-			
-			if (ALERT_READY_SCREEN && (current_message == 1)) {
-				ALERT_READY_SCREEN = false;
-				
-				
-			} else if (ALERT_READY_SCREEN && (current_message == 2)) {
-				ALERT_READY_SCREEN = false;
-				
-				
-			} else if (ALERT_READY_SCREEN && (current_message == 3)) {
-				ALERT_READY_SCREEN = false;
-				
-				
-			}
+			}	
 			break;
 		}
+	}
+}
+
+void print_countdown() {
+	char countdown[] = "3 2 1";
+	int x_start = 40;
+	int y_start = 136;
+	int i;
+	
+	for (i = 0; i < 10000000; i++) {
+	}
+	
+	lcd_clear_screen(LCD_COLOR_BLUE2);
+	
+	for (i = 0; i < strlen(countdown); i++) {
+		if(countdown[i] == ' '){ // increment x for space
+			x_start = x_start + 40;
+		} else { // write character to screen
+			int descriptorOffset = countdown[i] - '1'; // subtract start character ('!') to get offset
+			int bitmapOffset = tahoma_48ptDescriptors[descriptorOffset].offset;
+			int width_bits = tahoma_48ptDescriptors[descriptorOffset].widthBits;
+			int height_pixels = 48;
+			
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_48ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+			x_start = x_start + width_bits + 2;					
+		}
+	}
+	
+	// Begin countdown
+	for (i = 0; i < 6000000; i++) {
+	}
+	lcd_draw_rectangle(40, 28, 136, 48, LCD_COLOR_BLUE2); // draw over 3
+	
+	for (i = 0; i < 6000000; i++) {
+	}
+	lcd_draw_rectangle(110, 29, 136, 48, LCD_COLOR_BLUE2); // draw over 2
+	
+	for (i = 0; i < 6000000; i++) {
+	}
+	lcd_draw_rectangle(181, 22, 136, 48, LCD_COLOR_BLUE2); // draw over 1
+	
+	for (i = 0; i < 10000000; i++) {
 	}
 }
 

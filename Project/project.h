@@ -29,9 +29,14 @@ extern volatile bool ALERT_READY_SCREEN;
 void print_welcome(void);
 
 //************************************************************************
-// Prints different levels for user to select from
+// Prints GET READY screen
 //************************************************************************
 void print_ready(void);
+
+//************************************************************************
+// Prints countdown
+//************************************************************************
+void print_countdown(void);
 
 //************************************************************************
 // Will be the main game driver

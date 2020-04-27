@@ -60,6 +60,7 @@ main(void)
 	
 	//Wait for touch interrupt to go to start game screen
 	print_ready();
+	print_countdown();
 	
 	//Begin Game
 	while(!game_over){
