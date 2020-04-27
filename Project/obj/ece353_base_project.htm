@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\obj\ece353_base_project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\obj\ece353_base_project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Apr 27 10:10:21 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Apr 27 10:29:49 2020
 <BR><P>
 <H3>Maximum Stack Usage =        352 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -294,7 +294,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = main &rArr; print_welcome &rArr; lcd_draw_char &rArr; lcd_set_pos &rArr; lcd_write_data_u16
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_welcome
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_levels
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_hardware
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;game_main
 </UL>
@@ -317,7 +317,7 @@ Global Symbols
 <P><STRONG><a name="[21]"></a>TIMER2A_Handler</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, project_interrupts.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_tm4c123.o(RESET)
 </UL>
-<P><STRONG><a name="[2d]"></a>TIMER3A_Handler</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, project_interrupts.o(.text))
+<P><STRONG><a name="[2d]"></a>TIMER3A_Handler</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, project_interrupts.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_tm4c123.o(RESET)
 </UL>
 <P><STRONG><a name="[7e]"></a>print_welcome</STRONG> (Thumb, 446 bytes, Stack size 272 bytes, project.o(.text))
@@ -331,12 +331,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7f]"></a>print_levels</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, project.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = print_levels &rArr; lcd_draw_box &rArr; lcd_set_pos &rArr; lcd_write_data_u16
+<P><STRONG><a name="[7f]"></a>print_ready</STRONG> (Thumb, 252 bytes, Stack size 80 bytes, project.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = print_ready &rArr; lcd_draw_char &rArr; lcd_set_pos &rArr; lcd_write_data_u16
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_draw_box
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_draw_char
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_draw_box
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ft6x06_read_td_status
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_clear_screen
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -624,7 +626,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ft6x06_read_data
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ft6x06_set_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_levels
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 </UL>
 
 <P><STRONG><a name="[b1]"></a>ft6x06_read_x</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, ft6x06.o(.text), UNUSED)
@@ -677,7 +679,7 @@ Global Symbols
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_write_data_u16
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_welcome
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_levels
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_hardware
 </UL>
 
@@ -687,7 +689,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_set_pos
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_write_data_u16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_levels
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 </UL>
 
 <P><STRONG><a name="[b8]"></a>lcd_draw_rectangle</STRONG> (Thumb, 82 bytes, Stack size 32 bytes, lcd.o(.text), UNUSED)
@@ -715,6 +717,7 @@ Global Symbols
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_write_data_u16
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_welcome
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 </UL>
 
 <P><STRONG><a name="[8d]"></a>lcd_draw_image</STRONG> (Thumb, 242 bytes, Stack size 56 bytes, lcd.o(.text))
@@ -1659,6 +1662,7 @@ Global Symbols
 
 <P><STRONG><a name="[89]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_welcome
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_ready
 </UL>
 
 <P><STRONG><a name="[7c]"></a>__scatterload</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, init.o(.text))
