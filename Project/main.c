@@ -59,7 +59,7 @@ main(void)
 	print_welcome();
 	
 	//Wait for touch interrupt to go to level selections screen
-	void print_levels();
+	print_levels();
 	
 	//Begin Game
 	while(!game_over){
