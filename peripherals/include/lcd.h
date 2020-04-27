@@ -52,7 +52,7 @@ typedef enum {
 #define LCD_COLOR_GREEN			0x07E0
 #define LCD_COLOR_GREEN2		0xB723
 #define LCD_COLOR_BLUE			0x001F
-#define LCD_COLOR_BLUE2			0x051D
+#define LCD_COLOR_BLUE2			0x051F
 #define LCD_COLOR_YELLOW		0xFFE0
 #define LCD_COLOR_ORANGE		0xFBE4
 #define LCD_COLOR_CYAN			0x07FF
@@ -140,51 +140,48 @@ typedef enum {
 #define LCD_CMD_DIGITAL_GAMMA_CONTROL_2         0xE3
 #define LCD_CMD_INTERFACE_CONTROL               0xF6
 
+#define LINE_HIGH                               0xFF
+#define LINE_LOW                                0x00
 
-#define LINE_HIGH     0xFF
-#define LINE_LOW      0x00
+#define LCD_CSX_PIN                             (1 << 4)
+#define LCD_CSX_GPIO_BASE                       GPIOC_BASE
+#define LCD_CSX_PORT                            GPIOC
 
-#define LCD_CSX_PIN          (1 << 4)
-#define LCD_CSX_GPIO_BASE    GPIOC_BASE
-#define LCD_CSX_PORT        GPIOC
+#define LCD_DCX_INSTR_PIN                       (1 << 5)
+#define LCD_DCX_INSTR_GPIO_BASE                 GPIOC_BASE
+#define LCD_DCX_INSTR_PORT                      GPIOC
 
-#define LCD_DCX_INSTR_PIN          (1 << 5)
-#define LCD_DCX_INSTR_GPIO_BASE    GPIOC_BASE
-#define LCD_DCX_INSTR_PORT         GPIOC
+#define LCD_DCX_DATA_PACKET                     0xFF
+#define LCD_DCX_CMD_PACKET                      0x00
 
-#define LCD_DCX_DATA_PACKET            0xFF
-#define LCD_DCX_CMD_PACKET             0x00
-
-#define LCD_WRX_PIN               (1 << 6)
-#define LCD_WRX_GPIO_BASE         GPIOC_BASE
-#define LCD_WRX_PORT              GPIOC
-
-#define LCD_RDX_PIN                (1 << 7)
-#define LCD_RDX_GPIO_BASE          GPIOC_BASE
-#define LCD_RDX_PORT               GPIOC
+#define LCD_WRX_PIN                           (1 << 6)
+#define LCD_WRX_GPIO_BASE                     GPIOC_BASE
+#define LCD_WRX_PORT                          GPIOC
   
-#define LCD_DATA_PINS                0xFF
-#define LCD_DATA_GPIO_BASE           GPIOB_BASE
-#define LCD_DATA_PORT                GPIOB
+#define LCD_RDX_PIN                           (1 << 7)
+#define LCD_RDX_GPIO_BASE                     GPIOC_BASE
+#define LCD_RDX_PORT                          GPIOC
+  
+#define LCD_DATA_PINS                         0xFF
+#define LCD_DATA_GPIO_BASE                    GPIOB_BASE
+#define LCD_DATA_PORT                         GPIOB
 
-// ADD CODE
+
+#if 0
+#define LCD_CSX                     (*((volatile unsigned long *)((LCD_CHIP_SELECT_GPIO_BASE & ~0x3FC)|(LCD_CHIP_SELECT_PIN << 2) )))
+#define LCD_DCX                     (*((volatile unsigned long *)((LCD_DATA_INSTR_GPIO_BASE & ~0x3FC)|(LCD_DATA_INSTR_PIN << 2) )))
+#define LCD_WRX                     (*((volatile unsigned long *)((LCD_WRITE_N_GPIO_BASE & ~0x3FC)|(LCD_WRITE_N_PIN << 2) )))
+#define LCD_RDX                     (*((volatile unsigned long *)((LCD_READ_N_GPIO_BASE & ~0x3FC)|(LCD_READ_N_PIN << 2) )))
+#define LCD_DATA                    (*((volatile unsigned long *)((LCD_DATA_GPIO_BASE & ~0x3FC)|(LCD_DATA_PINS << 2) )))
+
+#else
 #define LCD_CSX                     (*((volatile unsigned long *)0x40006040))
 #define LCD_DCX                     (*((volatile unsigned long *)0x40006080))
 #define LCD_WRX                     (*((volatile unsigned long *)0x40006100))
-// this might be wrong 3/8/20
-//#define LCD_RDX                     (*((volatile unsigned long *)0x00000000))
 #define LCD_RDX                     (*((volatile unsigned long *)0x40006200))
-#define LCD_DATA                    (*((volatile unsigned long *)0x400053fc))
+#define LCD_DATA                    (*((volatile unsigned long *)0x400053FC))
+#endif
 
-/*******************************************************************************
-* Function Name: lcd_write_data_u16
-********************************************************************************
-* Summary: 
-* Return:
-*  Nothing
-*******************************************************************************/ 
-__INLINE void lcd_write_data_u16(uint16_t y);
-	
 /*******************************************************************************
 * Function Name: lcd_set_pos
 ********************************************************************************
@@ -233,6 +230,26 @@ void lcd_draw_box(
 );
 
 /*******************************************************************************
+* Function Name: lcd_draw_char
+********************************************************************************
+* Summary: Prints a character centered at the coordinates set by x_start, y_start
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_char(
+  uint16_t x_start,               // X coordinate starting address
+  uint16_t image_width_bits,      // character  width
+  uint16_t y_start,               // Y coordiante starting address
+  uint16_t image_height_pixels,   // character height
+  const uint8_t *image,           // bit map image for the char
+  uint16_t fColor,                // foreground color
+  uint16_t bColor,                // background color
+  uint8_t rounded_corners         // indicates if the background color should
+                                  // have rounded corners.
+                                  // (ROUND_NONE, ROUNDED_LEFT, or ROUNDED_RIGHT)
+);
+
+/*******************************************************************************
 * Function Name: lcd_draw_image
 ********************************************************************************
 * Summary: Prints an image centered at the coordinates set by x_start, y_start
@@ -250,6 +267,39 @@ void lcd_draw_image(
 );
 
 /*******************************************************************************
+* Function Name: lcd_draw_image_right
+********************************************************************************
+* Summary: Prints an image at the coordinates set by x_start, y_start
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_image_right(
+  uint16_t x_start, 
+  uint16_t image_width_bits, 
+  uint16_t y_start, 
+  uint16_t image_height_pixels, 
+  const uint8_t *image, 
+  uint16_t fColor, 
+  uint16_t bColor
+);
+  
+/*******************************************************************************
+* Function Name: lcd_draw_rectangle
+********************************************************************************
+* Summary: Draws a rectangle starting at x_start,y_start.
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_rectangle
+  (
+  uint16_t x_start, 
+  uint16_t x_len, 
+  uint16_t y_start, 
+  uint16_t y_len,  
+  uint16_t fg_color
+);
+
+  /*******************************************************************************
 * Function Name: lcd_config_gpio
 ********************************************************************************
 * Summary: Configures the GPIO pins used to implement the 8080 interface on the
@@ -271,6 +321,63 @@ void lcd_config_gpio(void);
 *  Nothing
 *******************************************************************************/  
 void lcd_config_screen(void);
+
+
+ /*******************************************************************************
+* Function Name: lcd_draw_line
+********************************************************************************
+* Summary: Draws a line on the LCD
+* Returns:
+*  Nothing
+*******************************************************************************/ 
+void lcd_draw_line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint32_t color);
+
+
+/*******************************************************************************
+* Function Name: lcd_draw_filled_circle
+********************************************************************************
+* Summary: Draws a circle on the LCD
+* Returns:
+*  Nothing
+*******************************************************************************/ 
+void lcd_draw_circle(int16_t x0, int16_t y0, int16_t r, uint32_t color);
+
+#if 1
+/*******************************************************************************
+* Function Name: lcd_draw_rectangle
+********************************************************************************
+* Summary: Draws a rectangle centered at x_center, y_center.
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_rectangle_centered
+(
+  uint16_t x_center, 
+  uint16_t x_len, 
+  uint16_t y_center, 
+  uint16_t y_len,  
+  uint16_t fg_color
+);
+
+/*******************************************************************************
+* Function Name: lcd_draw_color_image
+********************************************************************************
+* Summary: Takes an array of 24-bits per pixel, converts it to 16-bits per pixel
+*          and prints the image out the line centered in the X direction.  
+*          
+*          The 16-bits of data should be made up of 5 bits of Red, 6 bits of 
+*          Green, and 5 bits of Blue.
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_color_image(
+  uint16_t image_width_bits, 
+  uint16_t row_number,  
+  uint8_t *image_data
+);
+
+  
+#endif
 
 #endif
 

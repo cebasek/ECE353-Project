@@ -22,6 +22,9 @@
 
 #include "main.h"
 #include "project_hardware_init.h"
+#include "project_images.h"
+
+#include "project.h" // Our project's main functions are here
 
 
 //*****************************************************************************
@@ -48,13 +51,22 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
+	bool game_over = false;
+	
 	init_hardware();
 	
-	//Render instructions screen
-	lcd_draw_image(120, 120, 160, 160, space_shipBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLACK);
+	//Print welcome screen
+	print_welcome();
 	
 	//Wait for touch interrupt to go to level selections screen
+	print_levels();
+	
+	//Begin Game
+	while(!game_over){
+		game_main();
+	}
 	
 	//Reach Infinite Loop
 	while(1){};
 }
+

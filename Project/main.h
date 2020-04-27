@@ -33,6 +33,7 @@
 #include "timers.h"
 #include "ps2.h"
 #include "launchpad_io.h"
+#include "ft6x06.h"
 
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
