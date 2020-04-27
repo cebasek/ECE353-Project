@@ -1,8 +1,8 @@
-#include "main.h"
-#include "project_hardware_init.h"
-#include "project_images.h"
+#include "project.h"
 
-
+volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
+volatile uint16_t BEAR_Y_COORD = 200;
+volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game
@@ -122,6 +122,16 @@ void print_levels() {
 		if (touch_event > 0) {
 			lcd_clear_screen(LCD_COLOR_BLACK);
 			lcd_draw_box(150, 80, 10, 25, LCD_COLOR_WHITE, LCD_COLOR_BLACK, 2);
+			break;
 		}
+	}
+}
+
+void game_main(void){
+	//If it's time to re-render the bear
+	if(ALERT_BEAR){
+		ALERT_BEAR = false;
+		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+	
 	}
 }

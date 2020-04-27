@@ -63,7 +63,7 @@ main(void)
 	
 	//Begin Game
 	while(!game_over){
-		
+		game_main();
 	}
 	
 	//Reach Infinite Loop
