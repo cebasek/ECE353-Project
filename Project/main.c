@@ -58,8 +58,8 @@ main(void)
 	//Print welcome screen
 	print_welcome();
 	
-	//Wait for touch interrupt to go to level selections screen
-	print_levels();
+	//Wait for touch interrupt to go to start game screen
+	print_ready();
 	
 	//Begin Game
 	while(!game_over){

@@ -1,4 +1,5 @@
 .\obj\project.o: project.c
+.\obj\project.o: project.h
 .\obj\project.o: main.h
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -26,6 +27,7 @@
 .\obj\project.o: project_interrupts.h
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\obj\project.o: main.h
+.\obj\project.o: project.h
 .\obj\project.o: project_hardware_init.h
 .\obj\project.o: project_images.h
 .\obj\project.o: bitmap_db.h

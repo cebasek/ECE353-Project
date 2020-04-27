@@ -31,50 +31,42 @@ compiling pc_buffer.c...
 compiling project_images.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project_images.h(7): warning:  #1-D: last line of file ends without a newline
-  extern const FONT_CHAR_INFO lucidaCalligraphy_12ptDescriptors[];
-project_images.c: 2 warnings, 0 errors
+project_images.c: 1 warning, 0 errors
+compiling timers.c...
+..\drivers\c\timers.c(60): warning:  #188-D: enumerated type mixed with another type
+         return 0;
+..\drivers\c\timers.c: 1 warning, 0 errors
+compiling project_interrupts.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project_interrupts.c: 1 warning, 0 errors
+compiling i2c.c...
+compiling spi.c...
 compiling adc.c...
-compiling project_hardware_init.c...
-project_hardware_init.h(27): warning:  #1295-D: Deprecated declaration init_hardware - give arg types
-  void init_hardware();
-project_hardware_init.c: 1 warning, 0 errors
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
 ..\drivers\c\gpio_port.c(468): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
 ..\drivers\c\gpio_port.c: 2 warnings, 0 errors
-compiling spi.c...
-compiling timers.c...
-..\drivers\c\timers.c(60): warning:  #188-D: enumerated type mixed with another type
-         return 0;
-..\drivers\c\timers.c: 1 warning, 0 errors
-compiling i2c.c...
-compiling project_interrupts.c...
-project_hardware_init.h(27): warning:  #1295-D: Deprecated declaration init_hardware - give arg types
-  void init_hardware();
-project_interrupts.c: 1 warning, 0 errors
-compiling main.c...
-project_hardware_init.h(27): warning:  #1295-D: Deprecated declaration init_hardware - give arg types
-  void init_hardware();
+compiling project_hardware_init.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project_images.h(7): warning:  #1-D: last line of file ends without a newline
-  extern const FONT_CHAR_INFO lucidaCalligraphy_12ptDescriptors[];
-project.h(7): warning:  #1295-D: Deprecated declaration print_welcome - give arg types
-  void print_welcome();
-project.h(10): warning:  #1-D: last line of file ends without a newline
-  #endif
-main.c: 5 warnings, 0 errors
+project_hardware_init.c: 1 warning, 0 errors
 compiling project.c...
-project_hardware_init.h(27): warning:  #1295-D: Deprecated declaration init_hardware - give arg types
-  void init_hardware();
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project_images.h(7): warning:  #1-D: last line of file ends without a newline
-  extern const FONT_CHAR_INFO lucidaCalligraphy_12ptDescriptors[];
-project.c: 3 warnings, 0 errors
+project.c(117): warning:  #177-D: variable "countdown3"  was declared but never referenced
+  	char countdown3[] = "3";
+project.c(118): warning:  #177-D: variable "countdown2"  was declared but never referenced
+  	char countdown2[] = "2";
+project.c(119): warning:  #177-D: variable "countdown1"  was declared but never referenced
+  	char countdown1[] = "1";
+project.c: 4 warnings, 0 errors
+compiling main.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+main.c: 1 warning, 0 errors
 compiling uart.c...
 ..\drivers\c\uart.c(184): warning:  #188-D: enumerated type mixed with another type
          return 0;
@@ -89,14 +81,14 @@ compiling accel.c...
 ..\peripherals\c\accel.c: 2 warnings, 0 errors
 assembling ws2812b.s...
 assembling startup_TM4C123.s...
-compiling ft6x06.c...
 compiling eeprom.c...
 ..\peripherals\c\eeprom.c(120): warning:  #550-D: variable "status"  was set but never used
     i2c_status_t status;
 ..\peripherals\c\eeprom.c: 1 warning, 0 errors
+compiling ft6x06.c...
 compiling launchpad_io.c...
-compiling ps2.c...
 compiling spi_select.c...
+compiling ps2.c...
 compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(170): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
@@ -105,11 +97,11 @@ compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(209): warning:  #177-D: variable "c"  was declared but never referenced
   	char c;
 ..\peripherals\c\serial_debug.c: 3 warnings, 0 errors
-compiling lcd.c...
 compiling system_TM4C123.c...
+compiling lcd.c...
 linking...
-Program Size: Code=8320 RO-data=2220 RW-data=20 ZI-data=4124  
-".\obj\ece353_base_project.axf" - 0 Error(s), 23 Warning(s).
+Program Size: Code=8596 RO-data=3204 RW-data=20 ZI-data=4124  
+".\obj\ece353_base_project.axf" - 0 Error(s), 19 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -135,10 +127,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: Keil::Device:Startup:1.0.1
-      Source file:   Device\Source\system_TM4C123.c
       Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\system_TM4C123.c
       Source file:   Device\Source\ARM\startup_TM4C123.s
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

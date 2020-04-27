@@ -32,6 +32,6 @@
 #include "lcd.h"
 #include "timers.h"
 #include "main.h"
-
+#include "project.h"
 
 #endif
