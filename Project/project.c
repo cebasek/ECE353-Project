@@ -20,7 +20,6 @@ void print_welcome(){
 	int x_start = 0;
 	int y_start = 0;
 
-
 //Prints our welcome message in white
 for(i = 0; i < len_w; i++){
 	
@@ -111,7 +110,18 @@ for(k = 0; k < len_c; k++){
 				y_start = y_start + 25;
 			}
 	 }
+}
+}
 
-}	
+void print_levels() {
+	uint8_t touch_event = 0;
 	
+	while (1) {
+		touch_event = ft6x06_read_td_status();
+	
+		if (touch_event > 0) {
+			lcd_clear_screen(LCD_COLOR_BLACK);
+			lcd_draw_box(150, 80, 10, 25, LCD_COLOR_WHITE, LCD_COLOR_BLACK, 2);
+		}
+	}
 }
