@@ -24,7 +24,7 @@
 
 #include "main.h"
 
-void init_hardware();
+void init_hardware(void);
 
 
 #endif

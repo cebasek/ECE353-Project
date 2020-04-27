@@ -35,5 +35,4 @@
 #include "project.h"
 #include "project_images.h"
 
-
 #endif
