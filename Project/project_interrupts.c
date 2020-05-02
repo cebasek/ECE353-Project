@@ -22,6 +22,9 @@
 
 #include "project_interrupts.h"
 
+volatile SPEED_t SPEED; // Current speed of the bear indiciated by joystick
+
+
 static volatile uint16_t PS2_X_DATA = 0;
 static volatile uint16_t PS2_Y_DATA = 0;
 static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
@@ -70,14 +73,27 @@ void TIMER2A_Handler(void){
 }
 
 //*****************************************************************************
-// TIMER3 ISR is used to determine when to move the bear and the ready screen
+
+// TIMER4 ISR is used to determine when to move the bear and the ready screen
 // ALSO - it checks if the pause button on the keyboard was pressed and if so it
 // pauses the game
 //*****************************************************************************
-void TIMER3A_Handler(void){
+
+void TIMER3A_Handler(void){	
+	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
+	if(fgetcNB(stdin) != ' '){
+    printf("Running...\n\r");
+	}
+	else{
+		while(fgetcNB(stdin) != ' '){
+			printf("Paused...\n\r");
+		}
+	}
 	ALERT_BEAR = true;
+	move_bear(&BEAR_Y_COORD);
+
 	ALERT_READY_SCREEN = true;
-	//move_image(PS2_DIR, &INVADER_X_COORD, &INVADER_Y_COORD, invaderHeightPixels, invaderWidthPixels);
+	
 
 	// Clear the interrupt
 	TIMER3->ICR |= TIMER_ICR_TATOCINT;
@@ -93,6 +109,8 @@ void TIMER4A_Handler(void) {
 	TIMER4->ICR |= TIMER_ICR_TATOCINT;
 }
 
+
+
 //*****************************************************************************
 // ADC0 Sample Sequencer 2 ISR
 //*****************************************************************************
@@ -105,3 +123,4 @@ void ADC0SS2_Handler(void)
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
 }
+

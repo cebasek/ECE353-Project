@@ -21,18 +21,13 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __INTERRUPTS_H__
 #define __INTERRUPTS_H__
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdlib.h>
 
-#include "TM4C123.h"
-#include "gpio_port.h"
-#include "ps2.h"
-#include "lcd.h"
-#include "timers.h"
 #include "main.h"
-#include "project.h"
-#include "project_images.h"
+#include "TM4C123.h"
+#include "driver_defines.h"
+#include "gpio_port.h"
+#include "serial_debug.h"
+#include "validate.h"
+
 
 #endif

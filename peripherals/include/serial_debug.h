@@ -79,4 +79,10 @@ int serial_debug_rx(PC_Buffer *rx_buffer, bool block);
 void serial_debug_tx(uint32_t uart_base, PC_Buffer *tx_buffer, int data);
 
 
+/****************************************************************************
+ * My non-blocking version of fgetc for UART0
+ ****************************************************************************/
+int fgetcNB(FILE* stream);
+
+
 #endif

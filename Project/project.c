@@ -1,4 +1,6 @@
 #include "project.h"
+#include "main.h"
+#include "io_expander.h"
 
 
 volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
@@ -6,7 +8,11 @@ volatile uint16_t BEAR_Y_COORD = 200;
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 volatile uint8_t HIGH_SCORE = 0;
 volatile bool ALERT_READY_SCREEN = true;
-volatile bool PAUSED = false; // Set to true if space bar is pressed
+
+
+//USED IN MOVE_BEAR FOR JUMPING LOGIC
+volatile bool JUMPING = false; //Indicates if we are currently in a jump
+volatile bool ASCENDING = false; //Indicates if we are moving up in a jump
 
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game
@@ -195,22 +201,39 @@ void print_countdown() {
 	}
 }
 
-void game_main(void){
-  //Pauses game if space bar is hit
-	char input[80];
-	memset(input, 0, 80);	
-	scanf("%79[^\n]", input);
-	if(*input == ' '){
-    if(PAUSED){
-		  PAUSED = false;
-		}
-		else{
-		  PAUSED = true;
-		}
+//*****************************************************************************
+// Moves the bear one pixel every time it's called to create the motion of a jump
+// when the right button is pressed
+//*****************************************************************************
+void move_bear(volatile uint16_t *y_coord){
+					
+	//If we're currently jumping, won't restart the jump when we click the right button
+	if(right_button_pressed() && !JUMPING){
+		JUMPING = true;
+		ASCENDING = true; //start jump by asscending
 	}
 	
- //If the game is paused, busy wait until it's unpaused
-	while(PAUSED){}
+	//If we are in the middle of a jump
+	if(JUMPING){
+		//If we hit jump's peak, descend
+		if(*y_coord == 100)
+			ASCENDING = false;
+			
+		//Ascent of jump 
+		if(ASCENDING)
+			*y_coord = *y_coord - 1;
+		//Descent of jump
+		else if(!ASCENDING)
+			*y_coord = *y_coord + 1;
+		
+		//DONE with jump once we are at our original position
+		JUMPING = !(*y_coord == 120);
+
+	}
+	
+}
+
+void game_main(void){
 	
 	//If it's time to re-render the bear
 	if(ALERT_BEAR){

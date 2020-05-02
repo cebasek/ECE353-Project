@@ -34,12 +34,15 @@
 #include "ps2.h"
 #include "launchpad_io.h"
 #include "ft6x06.h"
+#include "serial_debug.h"
+#include "eeprom.h"
+#include "io_expander.h"
 
+#include "project.h"
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
 #include "project_images.h"
 
-extern volatile bool BLINK_LAUNCHPAD_LED;
-extern volatile bool PAUSED;
 
+extern volatile bool BLINK_LAUNCHPAD_LED;
 #endif

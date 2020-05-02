@@ -15,6 +15,7 @@
 #include "project_hardware_init.h"
 #include "project_interrupts.h"
 #include "serial_debug.h"
+
 #include "main.h"
 
 extern volatile uint16_t BEAR_X_COORD; 
@@ -23,6 +24,19 @@ extern volatile bool ALERT_BEAR;
  
 extern volatile uint8_t HIGH_SCORE;
 extern volatile bool ALERT_READY_SCREEN;
+extern volatile bool GAME_OVER;
+
+
+//************************************************************************
+// Indicates how fast the polar bear is moving on the path indicated by
+// position of joystick
+//************************************************************************
+
+typedef enum{
+  SPEED_FAST,
+	SPEED_MEDIUM,
+	SPEED_SLOW
+} SPEED_t;
 
 typedef enum{
   PS2_DIR_UP,
@@ -52,5 +66,10 @@ void print_countdown(void);
 // Will be the main game driver
 //************************************************************************
 void game_main();
+
+//************************************************************************
+// Determines when to move the bear
+//************************************************************************
+void move_bear(volatile uint16_t *y_coord);
 
 #endif

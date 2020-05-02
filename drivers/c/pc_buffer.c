@@ -79,9 +79,9 @@ void pc_buffer_remove(PC_Buffer *buffer, char *data)
 //*****************************************************************************
 bool pc_buffer_empty(PC_Buffer *buffer)
 {
-	if(buffer->produce_count==buffer->consume_count)
+	if(buffer->produce_count==buffer->consume_count){
 		return true;
-	else
+}
 		return false;
 }
 
