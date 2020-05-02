@@ -37,4 +37,9 @@
 
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
+#include "project_images.h"
+
+extern volatile bool BLINK_LAUNCHPAD_LED;
+extern volatile bool PAUSED;
+
 #endif

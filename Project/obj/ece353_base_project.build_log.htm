@@ -22,53 +22,53 @@ Dialog DLL:      TCM.DLL V1.36.5.0
  
 <h2>Project:</h2>
 C:\Users\Mya\Documents\GitHub\ECE353-Project\Project\Project.uvprojx
-Project File Date:  04/26/2020
+Project File Date:  05/02/2020
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Project-F19'
-compiling pc_buffer.c...
 compiling project_images.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
 project_images.c: 1 warning, 0 errors
-compiling project.c...
+compiling pc_buffer.c...
+compiling project_hardware_init.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project.h(44): warning:  #1295-D: Deprecated declaration game_main - give arg types
+project.h(54): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
-project.c: 2 warnings, 0 errors
+project_hardware_init.c: 2 warnings, 0 errors
+compiling i2c.c...
+compiling spi.c...
 compiling adc.c...
 compiling timers.c...
 ..\drivers\c\timers.c(60): warning:  #188-D: enumerated type mixed with another type
          return 0;
 ..\drivers\c\timers.c: 1 warning, 0 errors
-compiling i2c.c...
-compiling spi.c...
-compiling project_interrupts.c...
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-project.h(44): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-project_interrupts.c: 2 warnings, 0 errors
-compiling project_hardware_init.c...
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-project.h(44): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-project_hardware_init.c: 2 warnings, 0 errors
-compiling main.c...
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-project.h(44): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-main.c: 2 warnings, 0 errors
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
 ..\drivers\c\gpio_port.c(468): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
 ..\drivers\c\gpio_port.c: 2 warnings, 0 errors
+compiling project_interrupts.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project.h(54): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+project_interrupts.c: 2 warnings, 0 errors
+compiling main.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project.h(54): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+main.c: 2 warnings, 0 errors
+compiling project.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project.h(54): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+project.c: 2 warnings, 0 errors
 compiling uart.c...
 ..\drivers\c\uart.c(184): warning:  #188-D: enumerated type mixed with another type
          return 0;
@@ -90,7 +90,6 @@ compiling eeprom.c...
 compiling ft6x06.c...
 compiling launchpad_io.c...
 compiling ps2.c...
-compiling spi_select.c...
 compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(170): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
@@ -100,9 +99,10 @@ compiling serial_debug.c...
   	char c;
 ..\peripherals\c\serial_debug.c: 3 warnings, 0 errors
 compiling system_TM4C123.c...
+compiling spi_select.c...
 compiling lcd.c...
 linking...
-Program Size: Code=9208 RO-data=4424 RW-data=28 ZI-data=4124  
+Program Size: Code=10992 RO-data=4488 RW-data=44 ZI-data=4124  
 ".\obj\ece353_base_project.axf" - 0 Error(s), 20 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -129,10 +129,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: Keil::Device:Startup:1.0.1
-      Include file:  Device\Include\TM4C123\TM4C123.h
       Source file:   Device\Source\system_TM4C123.c
       Source file:   Device\Source\ARM\startup_TM4C123.s
-Build Time Elapsed:  00:00:02
+      Include file:  Device\Include\TM4C123\TM4C123.h
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

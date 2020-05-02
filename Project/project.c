@@ -6,7 +6,7 @@ volatile uint16_t BEAR_Y_COORD = 200;
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 volatile uint8_t HIGH_SCORE = 0;
 volatile bool ALERT_READY_SCREEN = true;
-
+volatile bool PAUSED = false; // Set to true if space bar is pressed
 
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game
@@ -196,10 +196,25 @@ void print_countdown() {
 }
 
 void game_main(void){
+  //Pauses game if space bar is hit
+	char input[80];
+	memset(input, 0, 80);	
+	scanf("%79[^\n]", input);
+	if(*input == ' '){
+    if(PAUSED){
+		  PAUSED = false;
+		}
+		else{
+		  PAUSED = true;
+		}
+	}
+	
+ //If the game is paused, busy wait until it's unpaused
+	while(PAUSED){}
+	
 	//If it's time to re-render the bear
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
 		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLUE2);
-	
 	}
 }

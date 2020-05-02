@@ -26,6 +26,9 @@
 
 #include "project.h" // Our project's main functions are here
 
+volatile bool PAUSED = false;
+volatile bool BLINK_LAUNCHPAD_LED = true;
+volatile bool GAME_OVER = false;
 
 //*****************************************************************************
 //*****************************************************************************
@@ -63,7 +66,7 @@ main(void)
 	print_countdown();
 	
 	//Begin Game
-	while(!game_over){
+	while(!GAME_OVER){
 		game_main();
 	}
 	

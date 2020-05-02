@@ -26,8 +26,11 @@
 void init_hardware(void)
 {
 	//UART0 DEBUG INIT
-	init_serial_debug(true, true);
+	init_serial_debug(true, false);
 
+	
+	// LAUNCHPAD INIT
+	lp_io_init();
 	
 	//LCD INIT
   lcd_config_gpio();
@@ -36,7 +39,7 @@ void init_hardware(void)
 	ps2_initialize();
 	
 	//TIMERS INIT
-	
+	gp_timer_config_32(TIMER1_BASE,TIMER_TAMR_TAMR_PERIOD, 50000000, false, true); // Every 1 second
 	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1500000000, false, true); //Every 3 seconds
   gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true); // Every 1/60 seconds
 
