@@ -26,17 +26,14 @@
 void init_hardware(void)
 {
 	//UART0 DEBUG INIT
-	init_serial_debug(true, true);
-
+	init_serial_debug(true, false);
 	
 	//LCD INIT
   lcd_config_gpio();
   lcd_config_screen();
-  lcd_clear_screen(LCD_COLOR_BLACK);   
 	ps2_initialize();
 	
 	//TIMERS INIT
-	
 	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1500000000, false, true); //Every 3 seconds
   gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true); // Every 1/60 seconds
 

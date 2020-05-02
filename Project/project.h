@@ -14,7 +14,8 @@
 #include "project_images.h"
 #include "project_hardware_init.h"
 #include "project_interrupts.h"
-#include "main.h"
+#include "serial_debug.h"
+
 
 extern volatile uint16_t BEAR_X_COORD; 
 extern volatile uint16_t BEAR_Y_COORD;
@@ -22,6 +23,7 @@ extern volatile bool ALERT_BEAR;
  
 extern volatile uint8_t HIGH_SCORE;
 extern volatile bool ALERT_READY_SCREEN;
+extern volatile bool GAME_OVER;
 
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game

@@ -80,7 +80,10 @@
 
 
 
-bool io_expander_init(void);
-void io_expander_write_reg(uint8_t reg, uint8_t data);
-uint8_t io_expander_read_reg(uint8_t);
+extern bool io_expander_init(void);
+extern void io_expander_write_reg(uint8_t reg, uint8_t data);
+extern uint8_t io_expander_read_reg(uint8_t);
+
+////////CONFIGURES THE PUSH BUTTONS W I2C///////////////
+extern void config_buttons();
 #endif

@@ -437,6 +437,11 @@
               <FileType>5</FileType>
               <FilePath>.\project.h</FilePath>
             </File>
+            <File>
+              <FileName>io_expander.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\io_expander.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

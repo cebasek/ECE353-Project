@@ -31,15 +31,19 @@ void TIMER2A_Handler(void){
 
 
 //*****************************************************************************
-// TIMER3 ISR is used to determine when to move the bear and the ready screen
+// TIMER4 ISR is used to determine when to move the bear and the ready screen
+// ALSO - it checks if the pause button on the keyboard was pressed and if so it
+// pauses the game
 //*****************************************************************************
 
-void TIMER3A_Handler(void){
+void TIMER3A_Handler(void){	
 	ALERT_BEAR = true;
 	ALERT_READY_SCREEN = true;
 	//move_image(PS2_DIR, &INVADER_X_COORD, &INVADER_Y_COORD, invaderHeightPixels, invaderWidthPixels);
 
+
 	// Clear the interrupt
 	TIMER3->ICR |= TIMER_ICR_TATOCINT;
 }
+
 

@@ -21,11 +21,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
-#include "project_hardware_init.h"
-#include "project_images.h"
 
-#include "project.h" // Our project's main functions are here
-
+volatile bool GAME_OVER = false;
 
 //*****************************************************************************
 //*****************************************************************************
@@ -51,11 +48,9 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-	bool game_over = false;
-	
 	init_hardware();
 	
-	//Print welcome screen
+	//Print welcome screen  
 	print_welcome();
 	
 	//Wait for touch interrupt to go to start game screen
@@ -63,7 +58,7 @@ main(void)
 	print_countdown();
 	
 	//Begin Game
-	while(!game_over){
+	while(!GAME_OVER){
 		game_main();
 	}
 	
