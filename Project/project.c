@@ -8,7 +8,6 @@ volatile uint16_t BEAR_Y_COORD = 200;
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 volatile uint8_t HIGH_SCORE = 0;
 volatile bool ALERT_READY_SCREEN = true;
-volatile bool PAUSED = false; //Set to true if space bar is pressed
 
 
 //USED IN MOVE_BEAR FOR JUMPING LOGIC
@@ -206,10 +205,7 @@ void print_countdown() {
 // Moves the bear one pixel every time it's called to create the motion of a jump
 // when the right button is pressed
 //*****************************************************************************
-void move_bear(
-				volatile uint16_t *y_coord, 
-        uint8_t image_height, 
-        uint8_t image_width){
+void move_bear(volatile uint16_t *y_coord){
 					
 	//If we're currently jumping, won't restart the jump when we click the right button
 	if(right_button_pressed() && !JUMPING){
@@ -243,6 +239,5 @@ void game_main(void){
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
 		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLUE2);
-	
 	}
 }

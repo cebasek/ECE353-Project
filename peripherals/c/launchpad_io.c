@@ -66,7 +66,7 @@
 static __inline void  port_f_enable_port(void)
 {
   //Turn on clock for port F
-	SYSCTL->RCGCGPIO = 0x20;
+	SYSCTL->RCGCGPIO |= SYSCTL_DC4_GPIOF;
 	
 	//Wait for clock to turn on
 	while( !(SYSCTL->PRGPIO & SYSCTL_PRGPIO_R5) ){ }
@@ -129,7 +129,7 @@ static __inline void  port_f_enable_output(uint8_t bit_mask)
 //*****************************************************************************
 static __inline void  port_f_enable_input(uint8_t bit_mask)
 {
-	GPIOF->DIR &= ~bit_mask;
+	GPIOF->DIR |= ~bit_mask;
 }
 
 //*****************************************************************************
@@ -160,7 +160,7 @@ static __inline void  port_f_enable_pull_up(uint8_t bit_mask)
 //*****************************************************************************
 void  lp_io_set_pin(uint8_t pin_number)
 {
-	GPIOF->DATA |= pin_number;
+	GPIOF->DATA |= (1 << pin_number);
 }
 
 //*****************************************************************************
@@ -173,7 +173,7 @@ void  lp_io_set_pin(uint8_t pin_number)
 //*****************************************************************************
 void  lp_io_clear_pin(uint8_t pin_number)
 {
-	GPIOF->DATA &= ~pin_number;
+	GPIOF->DATA &= ~(1 << pin_number);
 }
 
 //*****************************************************************************
@@ -188,10 +188,11 @@ void  lp_io_clear_pin(uint8_t pin_number)
 //*****************************************************************************
 bool  lp_io_read_pin(uint8_t pin_number)
 {
-  if(GPIOF->DATA &  (1<< pin_number))  
+  if(GPIOF->DATA & (1 << pin_number)) {
 		return true;
-	else
+	} else {
 		return false;
+	}
 }
 
 /*********************************************************************************

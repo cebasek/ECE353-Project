@@ -24,15 +24,56 @@
 
 volatile SPEED_t SPEED; // Current speed of the bear indiciated by joystick
 
-//**********************************************************************
+
+static volatile uint16_t PS2_X_DATA = 0;
+static volatile uint16_t PS2_Y_DATA = 0;
+static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
+
+//*****************************************************************************
+// Returns the most current direction that was pressed.
+//*****************************************************************************
+PS2_DIR_t ps2_get_direction(void)
+{
+  if (PS2_X_DATA > 0xC00) {
+		PS2_DIR = PS2_DIR_LEFT; // joystick left
+	} else if (PS2_X_DATA < 0x400) {
+		PS2_DIR = PS2_DIR_RIGHT; // joystick right
+	} else if (PS2_Y_DATA > 0xC00) {
+		PS2_DIR = PS2_DIR_UP; // joystick up
+	} else if (PS2_Y_DATA < 0x400) {
+		PS2_DIR = PS2_DIR_DOWN; // joystick down
+	} else {
+		PS2_DIR = PS2_DIR_CENTER;
+	}
+	return PS2_DIR;
+}
+
+//*****************************************************************************
+// TIMER1 blinks the LED on the launchpad every 1 second
+//*****************************************************************************
+void TIMER1A_Handler(void){
+	// blink launchpad LED blue
+	if (BLINK_LAUNCHPAD_LED) {
+		lp_io_set_pin(BLUE_BIT); // LED on
+		BLINK_LAUNCHPAD_LED = false;
+	} else {
+		lp_io_clear_pin(BLUE_BIT); // LED off
+		BLINK_LAUNCHPAD_LED = true;
+	}
+	
+	// Clear the interrupt
+	TIMER1->ICR |= TIMER_ICR_TATOCINT;
+}
+
+//*****************************************************************************
 // TIMER2 ISR is triggered every 3 seconds and will add one point to the player's score
 //*****************************************************************************
 void TIMER2A_Handler(void){
 	TIMER2->ICR |= TIMER_ICR_TATOCINT; // Clear the interrupt
 }
 
-
 //*****************************************************************************
+
 // TIMER4 ISR is used to determine when to move the bear and the ready screen
 // ALSO - it checks if the pause button on the keyboard was pressed and if so it
 // pauses the game
@@ -48,7 +89,6 @@ void TIMER3A_Handler(void){
 			printf("Paused...\n\r");
 		}
 	}
-	
 	ALERT_BEAR = true;
 	move_bear(&BEAR_Y_COORD);
 
@@ -58,5 +98,29 @@ void TIMER3A_Handler(void){
 	// Clear the interrupt
 	TIMER3->ICR |= TIMER_ICR_TATOCINT;
 }
+//*****************************************************************************
+// TIMER4 ISR to trigger the ADC
+//*****************************************************************************
+void TIMER4A_Handler(void) {
+	// Trigger ADC Sample Sequencer 2 conversion
+	ADC0->PSSI |= ADC_PSSI_SS2;
+	
+	// Clear the interrupt
+	TIMER4->ICR |= TIMER_ICR_TATOCINT;
+}
 
+
+
+//*****************************************************************************
+// ADC0 Sample Sequencer 2 ISR
+//*****************************************************************************
+void ADC0SS2_Handler(void)
+{	
+	PS2_X_DATA = ADC0->SSFIFO2;
+	PS2_Y_DATA = ADC0->SSFIFO2;
+	PS2_DIR = ps2_get_direction();
+	
+  // Clear the interrupt
+  ADC0->ISC |= ADC_ISC_IN2;
+}
 

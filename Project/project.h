@@ -16,6 +16,7 @@
 #include "project_interrupts.h"
 #include "serial_debug.h"
 
+#include "main.h"
 
 extern volatile uint16_t BEAR_X_COORD; 
 extern volatile uint16_t BEAR_Y_COORD;
@@ -37,6 +38,15 @@ typedef enum{
 	SPEED_SLOW
 } SPEED_t;
 
+typedef enum{
+  PS2_DIR_UP,
+  PS2_DIR_DOWN,
+  PS2_DIR_LEFT,
+  PS2_DIR_RIGHT,
+  PS2_DIR_CENTER,
+  PS2_DIR_INIT,
+} PS2_DIR_t;
+
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game
 //************************************************************************
@@ -56,5 +66,10 @@ void print_countdown(void);
 // Will be the main game driver
 //************************************************************************
 void game_main();
+
+//************************************************************************
+// Determines when to move the bear
+//************************************************************************
+void move_bear(volatile uint16_t *y_coord);
 
 #endif

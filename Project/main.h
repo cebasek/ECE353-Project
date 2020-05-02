@@ -43,6 +43,6 @@
 #include "project_hardware_init.h"
 #include "project_images.h"
 
-extern volatile bool PAUSED;
 
+extern volatile bool BLINK_LAUNCHPAD_LED;
 #endif

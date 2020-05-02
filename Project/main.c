@@ -22,6 +22,7 @@
 
 #include "main.h"
 
+volatile bool BLINK_LAUNCHPAD_LED = true;
 volatile bool GAME_OVER = false;
 
 //*****************************************************************************
