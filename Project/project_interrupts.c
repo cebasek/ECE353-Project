@@ -22,7 +22,9 @@
 
 #include "project_interrupts.h"
 
-//*****************************************************************************
+volatile SPEED_t SPEED; // Current speed of the bear indiciated by joystick
+
+//**********************************************************************
 // TIMER2 ISR is triggered every 3 seconds and will add one point to the player's score
 //*****************************************************************************
 void TIMER2A_Handler(void){
@@ -37,10 +39,21 @@ void TIMER2A_Handler(void){
 //*****************************************************************************
 
 void TIMER3A_Handler(void){	
+	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
+	if(fgetcNB(stdin) != ' '){
+    printf("Running...\n\r");
+	}
+	else{
+		while(fgetcNB(stdin) != ' '){
+			printf("Paused...\n\r");
+		}
+	}
+	
 	ALERT_BEAR = true;
-	ALERT_READY_SCREEN = true;
-	//move_image(PS2_DIR, &INVADER_X_COORD, &INVADER_Y_COORD, invaderHeightPixels, invaderWidthPixels);
+	move_bear(&BEAR_Y_COORD);
 
+	ALERT_READY_SCREEN = true;
+	
 
 	// Clear the interrupt
 	TIMER3->ICR |= TIMER_ICR_TATOCINT;

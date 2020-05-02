@@ -22,16 +22,25 @@
 
 #include "main.h"
 #include "serial_debug.h"
+#include "io_expander.h"
 
 void init_hardware(void)
 {
 	//UART0 DEBUG INIT
+	DisableInterrupts();
 	init_serial_debug(true, false);
+	EnableInterrupts();
 	
 	//LCD INIT
   lcd_config_gpio();
   lcd_config_screen();
 	ps2_initialize();
+	
+	//IO EXPANDER BUTTONS INIT
+	io_expander_init();
+
+	io_expander_write_reg(MCP23017_GPIOA_R, 0xFF);
+	config_buttons();
 	
 	//TIMERS INIT
 	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1500000000, false, true); //Every 3 seconds

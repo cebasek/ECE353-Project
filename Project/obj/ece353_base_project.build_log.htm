@@ -31,47 +31,61 @@ compiling project_images.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
 project_images.c: 1 warning, 0 errors
-compiling main.c...
-..\peripherals\include\io_expander.h(88): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern void config_buttons();
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-project.h(46): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-main.c: 3 warnings, 0 errors
 compiling adc.c...
 compiling project_interrupts.c...
-..\peripherals\include\io_expander.h(88): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern void config_buttons();
+..\peripherals\include\io_expander.h(86): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration right_button_pressed - give arg types
+  extern bool right_button_pressed();
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project.h(46): warning:  #1295-D: Deprecated declaration game_main - give arg types
+project.h(58): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
-project_interrupts.c: 3 warnings, 0 errors
-compiling project_hardware_init.c...
-..\peripherals\include\io_expander.h(88): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern void config_buttons();
+project_interrupts.c(53): warning:  #223-D: function "move_bear" declared implicitly
+  	move_bear(&BEAR_Y_COORD);
+project_interrupts.c: 5 warnings, 0 errors
+compiling main.c...
+..\peripherals\include\io_expander.h(86): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration right_button_pressed - give arg types
+  extern bool right_button_pressed();
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-project.h(46): warning:  #1295-D: Deprecated declaration game_main - give arg types
+project.h(58): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
-project_hardware_init.c: 3 warnings, 0 errors
+main.c: 4 warnings, 0 errors
 compiling project.c...
 bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
-..\peripherals\include\io_expander.h(88): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern void config_buttons();
-project.h(46): warning:  #1295-D: Deprecated declaration game_main - give arg types
+..\peripherals\include\io_expander.h(86): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration right_button_pressed - give arg types
+  extern bool right_button_pressed();
+project.h(58): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
-project.c: 3 warnings, 0 errors
+project.c: 4 warnings, 0 errors
 compiling io_expander.c...
-..\peripherals\include\io_expander.h(88): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern void config_buttons();
-io_expander.c(14): warning:  #550-D: variable "readReg"  was set but never used
+..\peripherals\include\io_expander.h(86): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration right_button_pressed - give arg types
+  extern bool right_button_pressed();
+io_expander.c(25): warning:  #550-D: variable "readReg"  was set but never used
   	uint8_t readReg; //temp variable used when clearing interrupts 
-io_expander.c(126): warning:  #1-D: last line of file ends without a newline
+io_expander.c(143): warning:  #1-D: last line of file ends without a newline
   }
-io_expander.c: 3 warnings, 0 errors
+io_expander.c(128): warning:  #550-D: variable "status"  was set but never used
+  	i2c_status_t status; //just so we can set when we get byte
+io_expander.c: 5 warnings, 0 errors
+compiling project_hardware_init.c...
+..\peripherals\include\io_expander.h(86): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration right_button_pressed - give arg types
+  extern bool right_button_pressed();
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project.h(58): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+project_hardware_init.c: 4 warnings, 0 errors
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
@@ -91,16 +105,16 @@ compiling uart.c...
 ..\drivers\c\uart.c(275): warning:  #550-D: variable "rcgc_mask"  was set but never used
       uint32_t rcgc_mask;
 ..\drivers\c\uart.c: 2 warnings, 0 errors
-compiling eeprom.c...
-..\peripherals\c\eeprom.c(120): warning:  #550-D: variable "status"  was set but never used
-    i2c_status_t status;
-..\peripherals\c\eeprom.c: 1 warning, 0 errors
 compiling accel.c...
 ..\peripherals\c\accel.c(10): warning:  #177-D: function "accel_CSN_low"  was declared but never referenced
   static __INLINE void  accel_CSN_low(void)
 ..\peripherals\c\accel.c(18): warning:  #177-D: function "accel_CSN_high"  was declared but never referenced
   static __INLINE void  accel_CSN_high(void)
 ..\peripherals\c\accel.c: 2 warnings, 0 errors
+compiling eeprom.c...
+..\peripherals\c\eeprom.c(120): warning:  #550-D: variable "status"  was set but never used
+    i2c_status_t status;
+..\peripherals\c\eeprom.c: 1 warning, 0 errors
 compiling ft6x06.c...
 compiling launchpad_io.c...
 assembling ws2812b.s...
@@ -108,18 +122,18 @@ assembling startup_TM4C123.s...
 compiling ps2.c...
 compiling lcd.c...
 compiling spi_select.c...
-compiling system_TM4C123.c...
 compiling serial_debug.c...
-..\peripherals\c\serial_debug.c(170): warning:  #177-D: variable "uart_base"  was declared but never referenced
+..\peripherals\c\serial_debug.c(195): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
-..\peripherals\c\serial_debug.c(171): warning:  #177-D: variable "tx_buffer"  was declared but never referenced
+..\peripherals\c\serial_debug.c(196): warning:  #177-D: variable "tx_buffer"  was declared but never referenced
      PC_Buffer *tx_buffer;
-..\peripherals\c\serial_debug.c(209): warning:  #177-D: variable "c"  was declared but never referenced
+..\peripherals\c\serial_debug.c(234): warning:  #177-D: variable "c"  was declared but never referenced
   	char c;
 ..\peripherals\c\serial_debug.c: 3 warnings, 0 errors
+compiling system_TM4C123.c...
 linking...
-Program Size: Code=10512 RO-data=4488 RW-data=36 ZI-data=4124  
-".\obj\ece353_base_project.axf" - 0 Error(s), 27 Warning(s).
+Program Size: Code=9904 RO-data=4424 RW-data=36 ZI-data=4124  
+".\obj\ece353_base_project.axf" - 0 Error(s), 34 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -146,8 +160,8 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:1.0.1
       Source file:   Device\Source\system_TM4C123.c
-      Source file:   Device\Source\ARM\startup_TM4C123.s
       Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
 Build Time Elapsed:  00:00:03
 </pre>
 </body>

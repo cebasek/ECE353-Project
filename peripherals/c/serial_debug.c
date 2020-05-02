@@ -162,6 +162,31 @@ int fgetc(FILE* stream)
 }
 
 //****************************************************************************
+//  My version of the fgetc block with non blocking
+// ****************************************************************************/
+int fgetcNB(FILE* stream){
+   char c;
+
+   
+   if ( Rx_Interrupts_Enabled)
+   {
+    c = serial_debug_rx(&UART0_Rx_Buffer, false);
+   }
+   else
+   {
+     c = uart_rx_poll(UART0_BASE, false);
+   }
+
+   if (c == '\r')
+      c = '\n';
+
+   //fputc(c, stdout);
+
+   return c;
+	
+}
+
+//****************************************************************************
 // This function is called from MicroLIB's stdio library.  By implementing
 // this function, MicroLIB's putchar(), puts(), printf(), etc will now work.
 // ****************************************************************************/

@@ -25,6 +25,18 @@ extern volatile uint8_t HIGH_SCORE;
 extern volatile bool ALERT_READY_SCREEN;
 extern volatile bool GAME_OVER;
 
+
+//************************************************************************
+// Indicates how fast the polar bear is moving on the path indicated by
+// position of joystick
+//************************************************************************
+
+typedef enum{
+  SPEED_FAST,
+	SPEED_MEDIUM,
+	SPEED_SLOW
+} SPEED_t;
+
 //************************************************************************
 // Prints a welcome message to the screen upon reset of game
 //************************************************************************

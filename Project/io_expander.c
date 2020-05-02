@@ -2,6 +2,17 @@
 
 // use IO_EXPANDER_GPIO_BASE as base
 
+/*******************************************************************************
+* Function Name: right_button_pressed
+********************************************************************************
+* Summary: Returns true if the right button was pressed and we want the bear to jump
+*  Returns: true if the button was pressed, false otherwise
+*******************************************************************************/
+
+bool right_button_pressed(void){
+	return io_expander_read_reg(MCP23017_GPIOB_R);
+	
+}
 
 /*******************************************************************************
 * Function Name: configure_buttons
@@ -10,8 +21,10 @@
 * Returns:
 *  i2c_status_t the status of the I2C peripheral
 *******************************************************************************/
-void config_buttons(void){
+i2c_status_t config_buttons(void){
 	uint8_t readReg; //temp variable used when clearing interrupts 
+  i2c_status_t status; //just so we can set when we get byte
+	
 	
 	//Setup GPIO Port F
 	gpio_enable_port(IO_EXPANDER_IRQ_GPIO_BASE);
@@ -19,8 +32,9 @@ void config_buttons(void){
 	gpio_config_enable_input(IO_EXPANDER_IRQ_GPIO_BASE, IO_EXPANDER_IRQ_PIN_NUM);
 	gpio_config_falling_edge_irq(IO_EXPANDER_IRQ_GPIO_BASE, IO_EXPANDER_IRQ_PIN_NUM);
 
+	NVIC_SetPriority(gpio_get_irq_num(IO_EXPANDER_IRQ_GPIO_BASE),1);
+
 	NVIC_EnableIRQ(gpio_get_irq_num(IO_EXPANDER_IRQ_GPIO_BASE));
-  NVIC_SetPriority(gpio_get_irq_num(IO_EXPANDER_IRQ_GPIO_BASE),1);
  
 	//Clear Port A and setup Port B to be an input
 	io_expander_write_reg(MCP23017_IODIRA_R, 0x00);
@@ -29,8 +43,9 @@ void config_buttons(void){
 	//Enable Pull-ups.
   io_expander_write_reg(MCP23017_GPPUB_R, 0x0F);
   
-  //Clear Interrupts in INTCAPB
+  //Clear Interrupts
   readReg = io_expander_read_reg(MCP23017_INTCAPB_R);
+	readReg = io_expander_read_reg(MCP23017_GPIOB_R);
 
   //Configure pins 0-3 to handle interrupts
   io_expander_write_reg(MCP23017_GPINTENB_R, 0x0F);
@@ -39,6 +54,7 @@ void config_buttons(void){
   //Clear interrupts in GPIO B
   readReg = io_expander_read_reg(MCP23017_GPIOB_R);    
 	
+  return status;
 }
 
 
@@ -65,7 +81,7 @@ bool io_expander_init(void) {
 	//Part 2. SDA Configuration
 	if(!gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
 		return false;
-	if(gpio_config_open_drain(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
+	if(!gpio_config_open_drain(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
     return false;
 	if(!gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
     return false;  
@@ -109,6 +125,7 @@ void io_expander_write_reg(uint8_t reg, uint8_t data) {
 
 uint8_t io_expander_read_reg(uint8_t reg) {
 	uint8_t data; //to be read
+	i2c_status_t status; //just so we can set when we get byte
 	
 	//Change I2C address
 	i2cSetSlaveAddr(IO_EXPANDER_I2C_BASE, MCP23017_DEV_ID, I2C_WRITE); 
@@ -120,7 +137,7 @@ uint8_t io_expander_read_reg(uint8_t reg) {
 	i2cSetSlaveAddr(IO_EXPANDER_I2C_BASE, MCP23017_DEV_ID, I2C_READ);
 
 	//Read from register
-	i2cGetByte(IO_EXPANDER_I2C_BASE, &data, I2C_MCS_START|I2C_MCS_RUN | I2C_MCS_STOP);
+	status = i2cGetByte(IO_EXPANDER_I2C_BASE, &data, I2C_MCS_START|I2C_MCS_RUN | I2C_MCS_STOP);
 	
 	return data;
 }
