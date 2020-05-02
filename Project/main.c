@@ -26,7 +26,6 @@
 
 #include "project.h" // Our project's main functions are here
 
-volatile bool PAUSED = false;
 volatile bool BLINK_LAUNCHPAD_LED = true;
 volatile bool GAME_OVER = false;
 
