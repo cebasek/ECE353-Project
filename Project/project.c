@@ -386,9 +386,7 @@ void move_enemy(volatile uint16_t *x_coord){
 	
 	//If the last enemy left the screen, generate a random new one
 	if(contact_edge_enemy(ENEMY_X_COORD, enemyHeightPixels, enemyWidthPixels)) {
-		//Removes the image tht hit the edge of the screen
-		//not sure if really needed with new render thing
-		
+		//Removes the image that hits the edge of the screen
 		//Picks either 0 or 1
 		randNum = rand() % 2; 
 		
@@ -475,17 +473,15 @@ void recalculate_score()
 	//If one rectangle is on the complete left side of the other, no overlap
 	if(enemy.left > bear.right || bear.left > enemy.right)
 		return;
-	
+
 	//If one rectangle is completely above the other, no overlap
 	if(enemy.top > bear.bottom || bear.top > enemy.bottom)
 		return;
 	
 	//If the above conditions are not met, they are overlapping
-	SCORE = SCORE >> 1;
-	
-	//Re-renders the red LEDs on the left to indicate how many lives are left
-	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
-	
+
+	SCORE = (int)SCORE >> (int)1;
+
   return;
 }
 
@@ -509,6 +505,7 @@ void game_main(void) {
 	}
 	
 	//If TIMER3A detects its time to re-render the bear and enemy
+
 	if (ALERT_BEAR) {
 		ALERT_BEAR = false;
 		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
@@ -530,8 +527,8 @@ void game_main(void) {
 		/* end */
 		
 		lcd_draw_image(ENEMY_X_COORD, pixels_out_of_edge, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
-	}
 	
 	//Recalculates score if an enemy is overlapping with the bear
 	recalculate_score();
+
 }

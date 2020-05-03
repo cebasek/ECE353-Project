@@ -1368,6 +1368,7 @@ const FONT_INFO tahoma_48ptFontInfo =
 
 uint8_t stumpBitmaps[] =
 {
+
 	0x00, 0x00, 0x00, 0x03, 0xF0, 0x00, 0x00, 0x00, 0x00, //                               ######                              
 	0x00, 0x00, 0x08, 0xFF, 0xFF, 0xFC, 0x00, 0x00, 0x00, //                     #   ######################                    
 	0x00, 0x00, 0x3F, 0xFF, 0xFF, 0xFF, 0x80, 0x00, 0x00, //                   ###############################                 
@@ -1407,7 +1408,7 @@ uint8_t stumpBitmaps[] =
 	0x00, 0x0F, 0xFC, 0x00, 0x07, 0xFF, 0xFE, 0x00, 0x00, //             ##########               ##################           
 	0x00, 0x0F, 0xE0, 0x00, 0x00, 0x3F, 0xFE, 0x00, 0x00, //             #######                       #############           
 	0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x88, 0x00, 0x00, //            #####                                #   #             
-};
+}
 
 /* Bitmap sizes for stump */
 uint8_t stumpWidthPixels = 72;
@@ -1464,7 +1465,6 @@ uint8_t snowballBitmaps[] =
 /* Bitmap sizes for snowball */
 uint8_t snowballWidthPixels = 40;
 uint8_t snowballHeightPixels = 38;
-
 
 
 
