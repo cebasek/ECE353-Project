@@ -6,7 +6,9 @@
 
 volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
+
 volatile uint8_t HIGH_SCORE = 0;
+bool WAIT_SCORE = false;
 
 volatile uint16_t ENEMY_X_COORD = 320;
 volatile uint16_t ENEMY_Y_COORD = 228; //THIS WILL NEVER CHANGE
@@ -28,6 +30,9 @@ uint8_t *EnemyBitmaps;
 uint8_t enemyWidthPixels = 80;
 uint8_t enemyHeightPixels = 47;
 uint16_t ENEMY_COLOR;
+
+// indicates if at the start of a new game
+bool game_begin = true;
 
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 volatile bool ALERT_BUTTON = true; //Set to true when the push button is pressed
@@ -276,11 +281,11 @@ void print_high_score() {
 	// print out score
 	for (i = 0; i < strlen(score_array); i++) {
 		int descriptorOffset = score_array[i] - '0'; // subtract start character ('0') to get offset
-		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
-		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int bitmapOffset = tahoma_16ptDescriptorsNum[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptorsNum[descriptorOffset].widthBits;
 		int height_pixels = 16;
 		
-		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmapsNum + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 		x_start = x_start + width_bits + 2;
 	}
 	
@@ -334,16 +339,132 @@ void print_cur_score() {
 	// print out score
 	for (i = 0; i < strlen(score_array); i++) {
 		int descriptorOffset = score_array[i] - '0'; // subtract start character ('0') to get offset
-		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
-		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int bitmapOffset = tahoma_16ptDescriptorsNum[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptorsNum[descriptorOffset].widthBits;
 		int height_pixels = 16;
 		
 		lcd_draw_rectangle(x_start, width_bits + 20, y_start, height_pixels, LCD_COLOR_BLUE2);
-		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmapsNum + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 		x_start = x_start + width_bits + 2;
 	}
 	
 	free(score_array); // array not needed anymore
+}
+
+//*****************************************************************************
+// Displays "dead" screen, after player dies
+//*****************************************************************************
+void print_dead_screen() {
+	uint8_t touch_event;
+	char game_over[] = "GAME OVER!";
+	char play_again[] = "Play again?";
+	char yes[] = "YES";
+	char no[] = "NO";
+	int i;
+	int game_over_x_start = 18;
+	int game_over_y_start = 125;
+	int play_again_x_start = 73;
+	int play_again_y_start = game_over_y_start + 27 + 20;
+	int yes_x_start = 52;
+	int no_x_start = yes_x_start + 47 + 52;
+	int yesno_y_start = 210;
+	
+	bool yes_box;
+	bool no_box;
+	bool y_box;
+	uint16_t touch_x, touch_y;
+	
+	lcd_clear_screen(LCD_COLOR_BLUE2);
+	
+	// print "GAME OVER!" text
+	for (i = 0; i < strlen(game_over); i++) {
+				if(game_over[i] == ' '){ // increment x for space
+					game_over_x_start = game_over_x_start + 14;
+				} else { // write character to screen
+					int descriptorOffset = game_over[i] - '!'; // subtract start character ('!') to get offset
+					int bitmapOffset = tahoma_28ptDescriptors[descriptorOffset].offset;
+					int width_bits = tahoma_28ptDescriptors[descriptorOffset].widthBits;
+					int height_pixels = 28;
+				 
+					lcd_draw_char(game_over_x_start, width_bits, game_over_y_start, height_pixels, tahoma_28ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+					game_over_x_start = game_over_x_start + width_bits + 2;
+				}
+	}
+	
+	// print "Play again?" text
+	for (i = 0; i < strlen(play_again); i++) {
+		if(play_again[i] == ' '){ // increment x for space
+			play_again_x_start = play_again_x_start + 7;
+		} else { // write character to screen
+			int descriptorOffset = play_again[i] - '?'; // subtract start character ('?') to get offset
+			int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
+			int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+			int height_pixels = 21;
+		 
+			lcd_draw_char(play_again_x_start, width_bits, play_again_y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+			play_again_x_start = play_again_x_start + width_bits + 2;
+		}
+	}
+	
+	lcd_draw_box(yes_x_start - 5, 47, yesno_y_start - 6, 30, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 2);
+	
+	// print "YES" text
+	for (i = 0; i < strlen(yes) + 1; i++) {
+		// write character to screen
+		int descriptorOffset = yes[i] - '?'; // subtract start character ('?') to get offset
+		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int height_pixels = 21;
+	 
+		lcd_draw_char(yes_x_start, width_bits, yesno_y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+		yes_x_start = yes_x_start + width_bits + 2;
+	}
+	
+	lcd_draw_box(no_x_start - 5, 37, yesno_y_start - 6, 30, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 2);
+	
+	// print "NO" text
+	for (i = 0; i < strlen(no) + 1; i++) {
+		// write character to screen
+		int descriptorOffset = no[i] - '?'; // subtract start character ('?') to get offset
+		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int height_pixels = 21;
+	 
+		lcd_draw_char(no_x_start, width_bits, yesno_y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
+		no_x_start = no_x_start + width_bits + 2;
+	}
+	
+	// wait until a touch event to continue
+	while (1) {			
+		touch_event = ft6x06_read_td_status();
+		
+		// get coordinates of touch and check if in boxes
+		if (touch_event > 0) {
+			touch_x = ft6x06_read_x();
+			touch_y = ft6x06_read_y();
+			printf("X: %d\t, Y: %d\n", touch_x, touch_y);
+			
+			// yes and no boxes
+			yes_box = (touch_x >= 47) && (touch_x <= 104);
+			no_box = (touch_x >= 146) && (touch_x <= 198);
+			y_box = (touch_y > (yesno_y_start - 6)) && (touch_y < (yesno_y_start + 30 + 6));
+			
+			if (yes_box && y_box) { // if in "Yes"
+				GAME_OVER = false;
+				PLAY_AGAIN = true;
+				DEAD_SCREEN = false;
+				lcd_clear_screen(LCD_COLOR_BLUE2);
+				return;
+			} else if (no_box && y_box) { // if in "No"
+				PLAY_AGAIN = false;
+				DEAD_SCREEN = false;
+				lcd_clear_screen(LCD_COLOR_BLUE2);
+				return;
+			} else { // in neither box
+				continue;
+			}
+		}
+	}
 }
 
 //*****************************************************************************
@@ -454,8 +575,7 @@ void move_enemy(volatile uint16_t *x_coord){
 //*****************************************************************************
 
 bool contact_edge_enemy(){
-{
-  if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 10) //If we are about to be off screen
+  if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 10) { //If we are about to be off screen
 		return true;
 	}
 	
@@ -465,7 +585,7 @@ bool contact_edge_enemy(){
 //*****************************************************************************
 // Updates speed if joystick is right or left
 //*****************************************************************************
-SPEED_t update_speed(void) 
+SPEED_t update_speed()
 {
 	SPEED_t s;
 	switch(PS2_DIR){
@@ -480,7 +600,7 @@ SPEED_t update_speed(void)
 		  break;
 	
 		return s;
-}
+	}
 }
 
 //*****************************************************************************
@@ -493,6 +613,11 @@ void recalculate_score()
 	Rectangle bear;
 	//Represents the rectangle perimeter of the current enemy
 	Rectangle enemy;
+	
+	if (game_begin) {
+		SCORE = 0x1F;
+		return;
+	}
 	
 	bear.top = BEAR_Y_COORD - (bearHeightPixels/2);
 	bear.bottom = BEAR_Y_COORD + (bearHeightPixels/2);
@@ -512,9 +637,16 @@ void recalculate_score()
 	if(enemy.top > bear.bottom || bear.top > enemy.bottom)
 		return;
 	
+	if (SCORE == 0) {
+		GAME_OVER = true;
+		DEAD_SCREEN = true;
+	}
+	
 	//If the above conditions are not met, they are overlapping
-
-	SCORE = (int)SCORE >> (int)1;
+	if (!WAIT_SCORE) {
+		SCORE = (int)SCORE >> (int)1;
+		WAIT_SCORE = true;
+	}
 
   return;
 }
@@ -531,11 +663,13 @@ void draw_snow(void){
 // Our main driver that is consitently called until the player loses
 //*****************************************************************************
 void game_main(void) {
-	
+	int wait;
 	int pixels_out_of_edge;
 	GAME_RUNNING = true;
 	
-	
+
+	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
+
 	//Renders our constant background
 	draw_snow();
 	
@@ -566,7 +700,11 @@ void game_main(void) {
 //			pixels_out_of_edge = enemyWidthPixels;
 //		}
 		/* end */
-		
+		if (game_begin) {
+			game_begin = false;
+			for (wait = 0; wait < 9000000; wait++) {}
+			ENEMY_X_COORD = 320;
+		}
 		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
 		//Doing this here bc move_bear does not necessarily get called at the same time as this ldc_draw_image
 		//So it needs to disappear a bit before it hits the edge
@@ -584,7 +722,7 @@ void game_main(void) {
 	
 	//Recalculates score if an enemy is overlapping with the bear
 	recalculate_score();
+	
 	//Re-renders the red LEDs on the left to indicate how many lives are left
 	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
-	}
-
+}

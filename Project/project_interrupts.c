@@ -77,6 +77,10 @@ void TIMER1A_Handler(void){
 		BLINK_LAUNCHPAD_LED = true;
 	}
 	
+	if (WAIT_SCORE) {
+		WAIT_SCORE = false;
+	}
+	
 	// Clear the interrupt
 	TIMER1->ICR |= TIMER_ICR_TATOCINT;
 }
@@ -108,7 +112,7 @@ void TIMER2A_Handler(void){
 void TIMER3A_Handler(void){	
 	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
 	if(fgetcNB(stdin) != ' '){
-    printf("Running...\n\r");
+    //printf("Running...\n\r");
 	}
 	else{
 		while(fgetcNB(stdin) != ' '){

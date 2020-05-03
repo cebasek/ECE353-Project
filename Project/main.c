@@ -26,6 +26,8 @@ volatile uint8_t CUR_SCORE = 0;
 volatile bool BLINK_LAUNCHPAD_LED = true;
 volatile bool GAME_OVER = false;
 volatile bool GAME_RUNNING = false;
+volatile bool DEAD_SCREEN = false;
+volatile bool PLAY_AGAIN = true;
 
 //*****************************************************************************
 //*****************************************************************************
@@ -74,14 +76,26 @@ main(void)
 	print_ready();
 	print_countdown();
 	
-	//Begin Game
+	// Game running loop
 	while(!GAME_OVER){
 		eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, HIGH_SCORE);
 		game_main();
 		print_cur_score();
+		
+		while (DEAD_SCREEN) {
+			print_dead_screen();
+			
+			if (PLAY_AGAIN) {
+				SCORE = 0x1F;
+				print_welcome();
+				print_high_score();
+				print_ready();
+				print_countdown();
+				break; // continue game
+			} else {
+				while(1) {} // game done
+			}
+		}
 	}
-	
-	//Reach Infinite Loop
-	while(1){};
 }
 

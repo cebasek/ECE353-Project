@@ -119,24 +119,20 @@ uint16_t ft6x06_read_x(void)
   // ADD CODE
   // Return the X coordinate of the last touch point
   // This will require reading P1_XH and P1_XL
-	uint8_t upper;
-	uint8_t lower;
-	uint16_t data;
+	uint8_t data;
+	uint16_t fullData;
 	
 	ft6x06_set_addr(FT6X06_I2C_BASE, FT6X06_P1_XH_R);
-	ft6x06_read_data(FT6X06_I2C_BASE, &upper);
+	ft6x06_read_data(FT6X06_I2C_BASE, &data);
+	fullData = (uint16_t) data << 8; // shift to make it upper 8
 	
 	ft6x06_set_addr(FT6X06_I2C_BASE, FT6X06_P1_XL_R);
-	ft6x06_read_data(FT6X06_I2C_BASE, &lower);
+	ft6x06_read_data(FT6X06_I2C_BASE, &data);
+	fullData += data; // add in lower 8
 	
-	data = (uint16_t)upper; 
-	data = data<<8;
-	data = data + (uint16_t)lower;
+	fullData &= 0x2FFF; // mask upper 2 bits (event flag)
 	
-	//Mask first 4 bits
-	data &= 0x2FFF;
-	
-	return 239 - data;
+	return 239 - fullData;
 } 
 
 //*****************************************************************************
@@ -147,24 +143,20 @@ uint16_t ft6x06_read_y(void)
   // ADD CODE
   // Return the Y coordinate of the last touch point 
   // This will require reading P1_YH and P1_YL
-	uint8_t upper;
-	uint8_t lower;
-	uint16_t data;
+	uint8_t data;
+	uint16_t fullData;
 	
 	ft6x06_set_addr(FT6X06_I2C_BASE, FT6X06_P1_YH_R);
-	ft6x06_read_data(FT6X06_I2C_BASE, &upper);
+	ft6x06_read_data(FT6X06_I2C_BASE, &data);
+	fullData = (uint16_t) data << 8; // shift to make it upper 8
 	
 	ft6x06_set_addr(FT6X06_I2C_BASE, FT6X06_P1_YL_R);
-	ft6x06_read_data(FT6X06_I2C_BASE, &lower);
+	ft6x06_read_data(FT6X06_I2C_BASE, &data);
+	fullData += data; // add in lower 8
 	
-	data = (uint16_t)upper; 
-	data = data<<8;
-	data = data + (uint16_t)lower;
+	fullData &= 0x2FFF; // mask upper 2 bits (event flag)
 	
-	//Mask first 4 bits
-	data &= ~0xC000;
-	
-	return 319 - data;
+	return 319 - fullData;
 } 
 
 //*****************************************************************************
