@@ -8,7 +8,7 @@ volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
 volatile uint8_t HIGH_SCORE = 0;
 
-volatile uint16_t ENEMY_X_COORD = 240;
+volatile uint16_t ENEMY_X_COORD = 220;
 volatile uint16_t ENEMY_Y_COORD = 240; //THIS WILL NEVER CHANGE
 
 
@@ -353,10 +353,13 @@ void move_enemy(volatile uint16_t *x_coord){
 	int randNum;
 	
 	//If the last enemy left the screen, generate a random new one
-	if(contact_edge_enemy(ENEMY_X_COORD, enemyHeightPixels, enemyWidthPixels)){
+	if(contact_edge_enemy()){
 		//Removes the image tht hit the edge of the screen
+				//lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
+
 		
-		//lcd_draw_rectangle_centered(ENEMY_X_COORD, , 240, 150, LCD_COLOR_BLUE2);
+		//lcd_clear_screen(LCD_COLOR_BLUE2);
+		//lcd_draw_rectangle_centered(120, 239, 280, 39, LCD_COLOR_BLUE2);
 		//Picks either 0 or 1
 		randNum = rand() % 2; 
 		
@@ -394,14 +397,9 @@ void move_enemy(volatile uint16_t *x_coord){
 // Determines if any part of the enemy image would be off the screen as it continues on
 // Returns true if it would be off screen, false if on screen
 //*****************************************************************************
-bool contact_edge_enemy(
-    volatile uint16_t x_coord, 
-    uint8_t image_height, 
-    uint8_t image_width
-)
-		
+bool contact_edge_enemy()
 {
-  if((x_coord - (image_width / 2)) <= 0) //If we are about to be off screen
+  if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 10) //If we are about to be off screen
 		return true;
 	
 	return false;
@@ -454,15 +452,24 @@ void recalculate_score()
 	
 	//If the above conditions are not met, they are overlapping
 	SCORE = (int)SCORE >> (int)1;
-	//Re-renders the red LEDs on the left to indicate how many lives are left
-	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
   return;
+}
+
+//*****************************************************************************
+// Draws the snow at the bottom of the screen
+//*****************************************************************************
+void draw_snow(void){
+	lcd_draw_rectangle_centered(120, 238, 285, 70, LCD_COLOR_WHITE);
+	
 }
 
 //*****************************************************************************
 // Our main driver that is consitently called until the player loses
 //*****************************************************************************
 void game_main(void){
+	
+	//Renders our constant background
+	draw_snow();
 	
 	//If GPIOF detected a push button was pressed
 	if(ALERT_BUTTON){
@@ -476,18 +483,24 @@ void game_main(void){
 		update_speed();
 	}
 	
-	//If TIMER3A detects its time to re-render the bear and enemy
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
 		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
 	}
+	//If TIMER3A detects its time to re-render the bear and enemy
 	if(ALERT_ENEMY){
 		ALERT_ENEMY = false;
 		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
+		if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 17){
+			lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
+		}
 	}
 	
 	//Recalculates score if an enemy is overlapping with the bear
 	recalculate_score();
+	
+	//Re-renders the red LEDs on the left to indicate how many lives are left
+	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
 	
 	
 }
