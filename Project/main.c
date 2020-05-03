@@ -22,8 +22,11 @@
 
 #include "main.h"
 
+volatile uint8_t CUR_SCORE = 0;
+volatile uint8_t HIGH_SCORE = 0;
 volatile bool BLINK_LAUNCHPAD_LED = true;
 volatile bool GAME_OVER = false;
+volatile bool GAME_RUNNING = false;
 
 //*****************************************************************************
 //*****************************************************************************
@@ -49,10 +52,23 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
+	uint8_t get_score;
+	
 	init_hardware();
 	
 	//Print welcome screen  
 	print_welcome();
+	
+	// print high score on start screen
+	eeprom_byte_read(I2C1_BASE, EEPROM_ADDR, &get_score); // get cur high score
+	//eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, 0); // initialize/reset high score
+	if (HIGH_SCORE < CUR_SCORE) {
+		eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, CUR_SCORE);
+		HIGH_SCORE = CUR_SCORE;
+	} else {
+		HIGH_SCORE = get_score;
+	}
+	print_high_score();
 	
 	//Wait for touch interrupt to go to start game screen
 	print_ready();
@@ -60,7 +76,10 @@ main(void)
 	
 	//Begin Game
 	while(!GAME_OVER){
+		GAME_RUNNING = true;
+		eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, HIGH_SCORE);
 		game_main();
+		print_cur_score();
 	}
 	
 	//Reach Infinite Loop

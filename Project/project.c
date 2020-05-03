@@ -2,13 +2,10 @@
 #include "main.h"
 #include "io_expander.h"
 
-
 volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
-volatile uint8_t HIGH_SCORE = 0;
 volatile bool ALERT_READY_SCREEN = true;
-
 
 //USED IN MOVE_BEAR FOR JUMPING LOGIC
 volatile bool JUMPING = false; //Indicates if we are currently in a jump
@@ -125,6 +122,9 @@ for(k = 0; k < len_c; k++){
 }
 }
 
+//*****************************************************************************
+// Prints "GET READY!" to alert users to get ready to play game
+//*****************************************************************************
 void print_ready() {
 	uint8_t touch_event;
 	char get_ready[] = "GET READY!";
@@ -159,6 +159,9 @@ void print_ready() {
 	}
 }
 
+//*****************************************************************************
+// Print countdown until game start... 3, 2, 1
+//*****************************************************************************
 void print_countdown() {
 	char countdown[] = "3 2 1";
 	int x_start = 40;
@@ -184,21 +187,96 @@ void print_countdown() {
 		}
 	}
 	
-	// Begin countdown
-	for (i = 0; i < 6000000; i++) {
-	}
+	// Begin countdown and wait between counts
+	for (i = 0; i < 6000000; i++) {}
 	lcd_draw_rectangle(40, 28, 136, 48, LCD_COLOR_BLUE2); // draw over 3
-	
-	for (i = 0; i < 6000000; i++) {
-	}
+	for (i = 0; i < 6000000; i++) {}
 	lcd_draw_rectangle(110, 29, 136, 48, LCD_COLOR_BLUE2); // draw over 2
-	
-	for (i = 0; i < 6000000; i++) {
-	}
+	for (i = 0; i < 6000000; i++) {}
 	lcd_draw_rectangle(181, 22, 136, 48, LCD_COLOR_BLUE2); // draw over 1
+	for (i = 0; i < 10000000; i++) {}
+}
+
+//*****************************************************************************
+// Displays high score on startup
+//*****************************************************************************
+void print_high_score() {
+	int i, num;
+	int x_start = 180;
+	int y_start = 300;
+	int num_digits = 0;
+	char* score_array;
 	
-	for (i = 0; i < 10000000; i++) {
+	if (HIGH_SCORE == 0) {
+		num_digits = 1; // one digit
+	} else {
+		// get number of digits in high score
+		num = HIGH_SCORE;
+		while (num != 0) { // get number of digits
+			num /= 10;
+			num_digits++;
+		}
 	}
+	
+	score_array = malloc(num_digits * sizeof(char*));
+	
+	// turn high score to char array
+	snprintf(score_array, num_digits + 1, "%d", HIGH_SCORE);
+	
+	// print out score
+	for (i = 0; i < strlen(score_array); i++) {
+		int descriptorOffset = score_array[i] - '0'; // subtract start character ('!') to get offset
+		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int height_pixels = 16;
+		
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+		x_start = x_start + width_bits + 2;
+	}
+	
+	free(score_array); // array not needed anymore
+}
+
+//*****************************************************************************
+// Displays current score
+//*****************************************************************************
+void print_cur_score() {
+	int i, num;
+	int x_start = 190;
+	int og_x = x_start;
+	int y_start = 290;
+	int num_digits = 0;
+	char* score_array;
+	
+	if (CUR_SCORE == 0) {
+		num_digits = 1; // one digit
+	} else {
+		// get number of digits in high score
+		num = CUR_SCORE;
+		while (num != 0) { // get number of digits
+			num /= 10;
+			num_digits++;
+		}
+	}
+	
+	score_array = malloc(num_digits * sizeof(char*));
+	
+	// turn high score to char array
+	snprintf(score_array, num_digits + 1, "%d", CUR_SCORE);
+	
+	// print out score
+	for (i = 0; i < strlen(score_array); i++) {
+		int descriptorOffset = score_array[i] - '0'; // subtract start character ('!') to get offset
+		int bitmapOffset = tahoma_16ptDescriptors[descriptorOffset].offset;
+		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
+		int height_pixels = 16;
+		
+		lcd_draw_rectangle(og_x, 20, y_start, height_pixels, LCD_COLOR_BLUE2);
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+		x_start = x_start + width_bits + 2;
+	}
+	
+	free(score_array); // array not needed anymore
 }
 
 //*****************************************************************************

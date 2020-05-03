@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "TM4C123.h"
 #include "gpio_port.h"
@@ -21,11 +22,12 @@
 extern volatile uint16_t BEAR_X_COORD; 
 extern volatile uint16_t BEAR_Y_COORD;
 extern volatile bool ALERT_BEAR;
- 
+
+extern volatile uint8_t CUR_SCORE;
 extern volatile uint8_t HIGH_SCORE;
 extern volatile bool ALERT_READY_SCREEN;
 extern volatile bool GAME_OVER;
-
+extern volatile bool GAME_RUNNING;
 
 //************************************************************************
 // Indicates how fast the polar bear is moving on the path indicated by
@@ -62,6 +64,16 @@ void print_ready(void);
 //************************************************************************
 void print_countdown(void);
 
+//************************************************************************
+// Displays high score on startup
+//************************************************************************
+void print_high_score();
+
+//*****************************************************************************
+// Displays current score
+//*****************************************************************************
+void print_cur_score();
+	
 //************************************************************************
 // Will be the main game driver
 //************************************************************************

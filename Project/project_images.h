@@ -25,4 +25,9 @@ extern const uint8_t tahoma_48ptBitmaps[];
 extern const FONT_INFO tahoma_48ptFontInfo;
 extern const FONT_CHAR_INFO tahoma_48ptDescriptors[];
 
+// Font data for Tahoma 16pt for high score
+extern const uint8_t tahoma_16ptBitmaps[];
+extern const FONT_INFO tahoma_16ptFontInfo;
+extern const FONT_CHAR_INFO tahoma_16ptDescriptors[];
+
 #endif

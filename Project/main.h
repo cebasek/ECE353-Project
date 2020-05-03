@@ -43,6 +43,8 @@
 #include "project_hardware_init.h"
 #include "project_images.h"
 
+#define EEPROM_ADDR    256
 
 extern volatile bool BLINK_LAUNCHPAD_LED;
+
 #endif
