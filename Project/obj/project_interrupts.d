@@ -31,6 +31,7 @@
 .\obj\project_interrupts.o: ..\peripherals\include\eeprom.h
 .\obj\project_interrupts.o: ..\peripherals\include\io_expander.h
 .\obj\project_interrupts.o: project.h
+.\obj\project_interrupts.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\obj\project_interrupts.o: project_images.h
 .\obj\project_interrupts.o: bitmap_db.h
 .\obj\project_interrupts.o: project_hardware_init.h

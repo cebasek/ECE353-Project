@@ -78,14 +78,30 @@
 #define MCP23017_OLATB_R	    0x15 
 
 
+
 extern bool io_expander_init(void);
 extern void io_expander_write_reg(uint8_t reg, uint8_t data);
 extern uint8_t io_expander_read_reg(uint8_t);
 
-////////CONFIGURES THE PUSH BUTTONS W I2C///////////////
+//************************************************************************
+// Configures the push buttons with I2C
+//************************************************************************
 extern i2c_status_t config_buttons();
 
-////////USED TO MAKE POLAR BEAR JUMP/////////////////////
-extern bool right_button_pressed();
+//************************************************************************
+// Indicates which button was pressed
+//************************************************************************
+typedef enum{
+	BUTTON_RIGHT,
+	BUTTON_LEFT,
+	BUTTON_DOWN,
+	BUTTON_UP,
+	NONE_PRESSED
+} BUTTON_t;
+
+extern volatile BUTTON_t BUTTON_PRESSED; //The last pressed button
+
+extern bool io_expander_debounce();
+
 
 #endif

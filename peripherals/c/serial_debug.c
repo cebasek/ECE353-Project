@@ -283,7 +283,7 @@ __INLINE static void UART_Tx_Flow(uint32_t uart_base, PC_Buffer *tx_buffer)
 }
 
 //*****************************************************************************
-// UART0 Interrupt Service handlerh
+// UART0 Interrupt Service handler
 //*****************************************************************************
 void UART0_Handler(void)
 {

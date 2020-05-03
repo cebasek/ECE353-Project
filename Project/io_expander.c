@@ -1,21 +1,11 @@
 #include "io_expander.h"
+#include "main.h"
 
 // use IO_EXPANDER_GPIO_BASE as base
 
-/*******************************************************************************
-* Function Name: right_button_pressed
-********************************************************************************
-* Summary: Returns true if the right button was pressed and we want the bear to jump
-*  Returns: true if the button was pressed, false otherwise
-*******************************************************************************/
-
-bool right_button_pressed(void){
-	return io_expander_read_reg(MCP23017_GPIOB_R);
-	
-}
 
 /*******************************************************************************
-* Function Name: configure_buttons
+* Function Name: config_buttons
 ********************************************************************************
 * Summary: Allows the IO Expander to read input from the push buttons
 * Returns:
@@ -140,4 +130,37 @@ uint8_t io_expander_read_reg(uint8_t reg) {
 	status = i2cGetByte(IO_EXPANDER_I2C_BASE, &data, I2C_MCS_START|I2C_MCS_RUN | I2C_MCS_STOP);
 	
 	return data;
+}
+
+/*******************************************************************************
+* Function Name: io_expander_debounce
+********************************************************************************
+* Summary: Sets the button that was pressed to our global variable BUTTON_PRESSED
+* Returns:
+*  bool
+*******************************************************************************/
+bool io_expander_debounce(){
+	
+	uint8_t data = io_expander_read_reg(MCP23017_GPIOB_R) & 0x0F;
+	
+	if(lp_io_read_pin(0) && data ==15)
+		return true;
+	
+	switch(data){
+		case 0x07:
+			BUTTON_PRESSED = BUTTON_RIGHT;
+		  break;
+		case 0x0B:
+			BUTTON_PRESSED = BUTTON_LEFT;
+		  break;
+		case 0x0D:
+			BUTTON_PRESSED = BUTTON_DOWN;
+		  break;
+		case 0x0E:
+			BUTTON_PRESSED = BUTTON_UP;
+		  break;
+		default:
+			break;
+	}
+	return false;
 }

@@ -23,7 +23,6 @@
 #include "main.h"
 
 volatile uint8_t CUR_SCORE = 0;
-volatile uint8_t HIGH_SCORE = 0;
 volatile bool BLINK_LAUNCHPAD_LED = true;
 volatile bool GAME_OVER = false;
 volatile bool GAME_RUNNING = false;
