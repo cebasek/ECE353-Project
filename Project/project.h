@@ -90,7 +90,7 @@ void move_enemy(volatile uint16_t *x_coord);
 //************************************************************************
 // Determines when to move the bear
 //************************************************************************
-bool contact_edge_enemy();
+bool contact_edge_enemy(void);
 
 
 #endif
