@@ -61,6 +61,7 @@ main(void)
 	// print high score on start screen
 	eeprom_byte_read(I2C1_BASE, EEPROM_ADDR, &get_score); // get cur high score
 	//eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, 0); // initialize/reset high score
+	
 	if (HIGH_SCORE < CUR_SCORE) {
 		eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, CUR_SCORE);
 		HIGH_SCORE = CUR_SCORE;
@@ -75,7 +76,6 @@ main(void)
 	
 	//Begin Game
 	while(!GAME_OVER){
-		GAME_RUNNING = true;
 		eeprom_byte_write(I2C1_BASE, EEPROM_ADDR, HIGH_SCORE);
 		game_main();
 		print_cur_score();
