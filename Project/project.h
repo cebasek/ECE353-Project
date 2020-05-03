@@ -84,4 +84,5 @@ void move_enemy(volatile uint16_t *x_coord);
 //************************************************************************
 bool contact_edge_enemy();
 
+
 #endif

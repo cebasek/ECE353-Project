@@ -8,8 +8,8 @@ volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
 volatile uint8_t HIGH_SCORE = 0;
 
-volatile uint16_t ENEMY_X_COORD = 220;
-volatile uint16_t ENEMY_Y_COORD = 240; //THIS WILL NEVER CHANGE
+volatile uint16_t ENEMY_X_COORD = 320;
+volatile uint16_t ENEMY_Y_COORD = 228; //THIS WILL NEVER CHANGE
 
 
 typedef struct
@@ -47,7 +47,7 @@ volatile SPEED_t SPEED = SPEED_MEDIUM;
 //************************************************************************
 void print_welcome(){
 	char welcome[] = "Welcome to Polar *Plunge!*";
-	char instructions[] = "Goal: avoid snowballs and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down or right to*speed up*";
+	char instructions[] = "Goal: avoid balls* and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down or right to*speed up*";
 	char cont[] = "Touch the screen to*continue";
 	
 	int len_w = strlen(welcome);
@@ -263,7 +263,7 @@ void print_high_score() {
 			int width_bits = tahoma_10ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 9;
 			
-			lcd_draw_char(score_x_start, width_bits, score_y_start, height_pixels, tahoma_10ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+			lcd_draw_char(score_x_start, width_bits, score_y_start, height_pixels, tahoma_10ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 			score_x_start = score_x_start + width_bits + 2;					
 		}
 	}
@@ -278,7 +278,7 @@ void print_high_score() {
 		int width_bits = tahoma_16ptDescriptors[descriptorOffset].widthBits;
 		int height_pixels = 16;
 		
-		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 		x_start = x_start + width_bits + 2;
 	}
 	
@@ -324,7 +324,7 @@ void print_cur_score() {
 			int width_bits = tahoma_10ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 9;
 			
-			lcd_draw_char(score_x_start, width_bits, score_y_start, height_pixels, tahoma_10ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+			lcd_draw_char(score_x_start, width_bits, score_y_start, height_pixels, tahoma_10ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 			score_x_start = score_x_start + width_bits + 2;					
 		}
 	}
@@ -337,7 +337,7 @@ void print_cur_score() {
 		int height_pixels = 16;
 		
 		lcd_draw_rectangle(x_start, width_bits + 20, y_start, height_pixels, LCD_COLOR_BLUE2);
-		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+		lcd_draw_char(x_start, width_bits, y_start, height_pixels, tahoma_16ptBitmaps + bitmapOffset, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2, 0);
 		x_start = x_start + width_bits + 2;
 	}
 	
@@ -409,7 +409,7 @@ void move_enemy(volatile uint16_t *x_coord){
 	
 	switch(SPEED){
 		case SPEED_FAST:
-			*x_coord = *x_coord - 2;
+			*x_coord = *x_coord - 10;
 		  break;
 		case SPEED_MEDIUM:
 			*x_coord = *x_coord - 1.25;
@@ -437,18 +437,22 @@ bool contact_edge_enemy(){
 //*****************************************************************************
 // Updates speed if joystick is right or left
 //*****************************************************************************
-void update_speed(void) {
+SPEED_t update_speed(void) 
+{
+	SPEED_t s;
 	switch(PS2_DIR){
 		case PS2_DIR_RIGHT:
-			SPEED = SPEED_FAST;
+			s = SPEED_FAST;
 		  break;
 		case PS2_DIR_LEFT:
-			SPEED = SPEED_SLOW;
+			s = SPEED_SLOW;
 		  break;
 		default: //used for center case
-			SPEED = SPEED_MEDIUM;
+			s = SPEED_MEDIUM;
 		  break;
-	}
+	
+		return s;
+}
 }
 
 //*****************************************************************************
@@ -491,7 +495,7 @@ void recalculate_score()
 // Draws the snow at the bottom of the screen
 //*****************************************************************************
 void draw_snow(void){
-	lcd_draw_rectangle_centered(120, 238, 285, 70, LCD_COLOR_WHITE);
+	lcd_draw_rectangle_centered(120, 238, 260, 20, LCD_COLOR_WHITE);
 	
 }
 
@@ -499,8 +503,11 @@ void draw_snow(void){
 // Our main driver that is consitently called until the player loses
 //*****************************************************************************
 void game_main(void) {
+	
 	int pixels_out_of_edge;
 	GAME_RUNNING = true;
+	
+	//update_speed();
 	
 	//Renders our constant background
 	draw_snow();
@@ -514,7 +521,7 @@ void game_main(void) {
 	//If ADC0 detected movement in the joystick
 	if (ALERT_SPEED) {
 		ALERT_SPEED = false;
-		update_speed();
+		SPEED = update_speed();
 	}
 
   //If TIMER3A detects its time to re-render the bear and enemy
