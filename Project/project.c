@@ -526,9 +526,10 @@ void game_main(void) {
 //		}
 		/* end */
 		
-		lcd_draw_image(ENEMY_X_COORD, pixels_out_of_edge, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
+		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
 	
 	//Recalculates score if an enemy is overlapping with the bear
 	recalculate_score();
-
+	
+	}
 }
