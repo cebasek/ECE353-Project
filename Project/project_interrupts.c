@@ -22,12 +22,9 @@
 
 #include "project_interrupts.h"
 
-volatile SPEED_t SPEED; // Current speed of the bear indiciated by joystick
-
-
-static volatile uint16_t PS2_X_DATA = 0;
-static volatile uint16_t PS2_Y_DATA = 0;
-static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
+volatile uint16_t PS2_X_DATA = 0;
+volatile uint16_t PS2_Y_DATA = 0;
+volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 
 //*****************************************************************************
 // Returns the most current direction that was pressed.
@@ -73,8 +70,7 @@ void TIMER2A_Handler(void){
 }
 
 //*****************************************************************************
-
-// TIMER4 ISR is used to determine when to move the bear and the ready screen
+// TIMER3 ISR is used to determine when to move the bear and its obstacles
 // ALSO - it checks if the pause button on the keyboard was pressed and if so it
 // pauses the game
 //*****************************************************************************
@@ -89,11 +85,14 @@ void TIMER3A_Handler(void){
 			printf("Paused...\n\r");
 		}
 	}
+	
+	//Move Bear
 	ALERT_BEAR = true;
 	move_bear(&BEAR_Y_COORD);
-
-	ALERT_READY_SCREEN = true;
 	
+	//Move Enemy
+	ALERT_ENEMY = true;
+	move_enemy(&ENEMY_X_COORD);
 
 	// Clear the interrupt
 	TIMER3->ICR |= TIMER_ICR_TATOCINT;
@@ -122,5 +121,17 @@ void ADC0SS2_Handler(void)
 	
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
+	
+	//Time to change the speed of the bear
+	ALERT_SPEED = true;
+}
+
+//*****************************************************************************
+// GPIOF Sample Sequencer 2 ISR
+//*****************************************************************************
+void GPIOF_Handler(void){
+	ALERT_BUTTON = true; //To call debounce in main
+	//Clear the interrupt
+	GPIOF->ICR |= 0x01; 
 }
 

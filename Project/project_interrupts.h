@@ -29,5 +29,27 @@
 #include "serial_debug.h"
 #include "validate.h"
 
+//************************************************************************
+// Indicates how fast the polar bear is moving on the path indicated by
+// position of joystick
+//************************************************************************
+
+typedef enum{
+  SPEED_FAST,
+	SPEED_MEDIUM,
+	SPEED_SLOW
+} SPEED_t;
+
+typedef enum{
+  PS2_DIR_UP,
+  PS2_DIR_DOWN,
+  PS2_DIR_LEFT,
+  PS2_DIR_RIGHT,
+  PS2_DIR_CENTER,
+  PS2_DIR_INIT,
+} PS2_DIR_t;
+
+extern volatile PS2_DIR_t PS2_DIR;
+
 
 #endif

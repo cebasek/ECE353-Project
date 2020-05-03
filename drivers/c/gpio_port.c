@@ -466,10 +466,24 @@ bool  gpio_config_open_drain(uint32_t gpioBase, uint8_t pins)
 bool  gpio_config_falling_edge_irq(uint32_t gpioBase, uint8_t pins)
 {
   GPIOA_Type  *gpioPort;
+  gpioPort = (GPIOA_Type *)gpioBase;
 
-  // ADD CODE
-  // Verify that the base address is a valid GPIO base address
-  // using the verify_base_addr function provided above
+  //Verify that the base address is a valid GPIO base address
+  //using the verify_base_addr function provided above
+  if(!verify_base_addr(gpioBase)){
+    return false;
+  }
+  
+	//Temporarily disable interrupts
+  gpioPort->IM &= ~pins;
+	
+  //Configure the gpioPort for falling edge irq interrupts
+  GPIOF->IS &= ~pins;
+	gpioPort->ICR |= pins;
+	gpioPort->IEV &= ~pins;
+	
+  //Re-enable interrupts
+	gpioPort->IM |= pins;
     
   return true;
 }
