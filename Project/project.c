@@ -551,7 +551,7 @@ void move_enemy(volatile uint16_t *x_coord){
 
 bool contact_edge_enemy(){
 {
-  if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 10) //If we are about to be off screen
+  if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 10) { //If we are about to be off screen
 		return true;
 	}
 	
@@ -697,5 +697,9 @@ void game_main(void) {
 	
 	//Re-renders the red LEDs on the left to indicate how many lives are left
 	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
+<<<<<<< HEAD
 	}
 
+=======
+}
+>>>>>>> 45671b803ff46b1f92e7d03d5622a446f81fce32
