@@ -12,6 +12,7 @@
 ".\obj\spi.o"
 ".\obj\timers.o"
 ".\obj\uart.o"
+".\obj\gptimer.o"
 ".\obj\accel.o"
 ".\obj\eeprom.o"
 ".\obj\ft6x06.o"

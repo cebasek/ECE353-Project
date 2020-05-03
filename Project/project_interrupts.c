@@ -27,6 +27,18 @@ volatile uint16_t PS2_Y_DATA = 0;
 volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 
 //*****************************************************************************
+// GPIOF Sample Sequencer 2 ISR
+//*****************************************************************************
+void GPIOF_Handler(void){
+	uint8_t reg;
+	ALERT_BUTTON = true; //To call debounce in main
+	 
+	//Clear the interrupt
+	reg = io_expander_read_reg(MCP23017_GPIOB_R);
+	GPIOF->ICR |= GPIO_ICR_GPIO_M; 
+}
+
+//*****************************************************************************
 // Returns the most current direction that was pressed.
 //*****************************************************************************
 PS2_DIR_t ps2_get_direction(void)
@@ -126,8 +138,6 @@ void TIMER4A_Handler(void) {
 	TIMER4->ICR |= TIMER_ICR_TATOCINT;
 }
 
-
-
 //*****************************************************************************
 // ADC0 Sample Sequencer 2 ISR
 //*****************************************************************************
@@ -140,16 +150,10 @@ void ADC0SS2_Handler(void)
 	//Update direction
 	PS2_DIR = ps2_get_direction();
 	
+	ALERT_SPEED = 1;
+	
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
 }
 
-//*****************************************************************************
-// GPIOF Sample Sequencer 2 ISR
-//*****************************************************************************
-void GPIOF_Handler(void){
-	ALERT_BUTTON = true; //To call debounce in main
-	//Clear the interrupt
-	GPIOF->ICR |= 0x01; 
-}
 

@@ -58,31 +58,39 @@ i2c_status_t config_buttons(void){
 
 bool io_expander_init(void) {
 	if(!gpio_enable_port(IO_EXPANDER_GPIO_BASE))
-		return false;
-	
+		return false;	
 	//Part 1: SCL Configuration
 	if(!gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN))
 		return false;
 	if(!gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN))
-    return false;  
-  if(!gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PCTL_M, IO_EXPANDER_I2C_SCL_PIN_PCTL))
-    return false;
+		return false;  
+	if(!gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PCTL_M, IO_EXPANDER_I2C_SCL_PIN_PCTL))
+		return false;
 	
 	//Part 2. SDA Configuration
 	if(!gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
 		return false;
 	if(!gpio_config_open_drain(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
-    return false;
+		return false;
 	if(!gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN))
-    return false;  
-  if(!gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PCTL_M, IO_EXPANDER_I2C_SDA_PIN_PCTL))
-    return false;
+		return false;  
+	if(!gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PCTL_M, IO_EXPANDER_I2C_SDA_PIN_PCTL))
+		return false;
 	
 	//Part 3. I2C Configuration
 	if(initializeI2CMaster(IO_EXPANDER_I2C_BASE) != I2C_OK)
 		return false;
-	
-	return true;
+//Part 1: SCL Configuration
+//	gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN);
+//	gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN);
+//  gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PCTL_M, IO_EXPANDER_I2C_SCL_PIN_PCTL);
+//	
+//	//Part 2. SDA Configuration
+//	gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
+//	gpio_config_open_drain(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
+//	gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
+//	gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PCTL_M, IO_EXPANDER_I2C_SDA_PIN_PCTL);
+//  initializeI2CMaster(IO_EXPANDER_I2C_BASE);
 }
 
 /*******************************************************************************
