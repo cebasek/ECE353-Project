@@ -231,7 +231,6 @@ int fputc(int c, FILE* stream)
 __INLINE static void UART_Rx_Flow(uint32_t uart_base, PC_Buffer *rx_buffer)
 {
   UART0_Type *uart = (UART0_Type *)(uart_base);
-	char c;
   
   // Remove entries from the RX FIFO and place them in the circular buffer.  Return
   // once the RX FIFO is empty.

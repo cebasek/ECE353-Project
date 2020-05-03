@@ -76,9 +76,6 @@ void TIMER2A_Handler(void){
 		HIGH_SCORE = CUR_SCORE;
 	}
 	
-	printf("CUR SCORE: %d\t", CUR_SCORE);
-	printf("HIGH SCORE: %d\n", HIGH_SCORE);
-	
 	// Clear the interrupt
 	TIMER2->ICR |= TIMER_ICR_TATOCINT;
 }
@@ -92,7 +89,7 @@ void TIMER2A_Handler(void){
 void TIMER3A_Handler(void){	
 	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
 	if(fgetcNB(stdin) != ' '){
-    //printf("Running...\n\r");
+    printf("Running...\n\r");
 	}
 	else{
 		while(fgetcNB(stdin) != ' '){

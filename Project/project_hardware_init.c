@@ -39,7 +39,7 @@ void init_hardware(void)
   lcd_config_screen();
 	ps2_initialize();
 
-	//IO EXPANDER BUTTONS INIT
+	//IO EXPANDER init and button input setup
 	io_expander_init();
 	io_expander_write_reg(MCP23017_GPIOA_R, 0xFF);
 	config_buttons();
