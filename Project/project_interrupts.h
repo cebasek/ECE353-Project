@@ -51,5 +51,9 @@ typedef enum{
 
 extern volatile PS2_DIR_t PS2_DIR;
 
+extern volatile SPEED_t SPEED;
+
+extern SPEED_t update_speed();
+
 
 #endif

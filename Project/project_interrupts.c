@@ -31,18 +31,25 @@ volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 //*****************************************************************************
 PS2_DIR_t ps2_get_direction(void)
 {
-  if (PS2_X_DATA > 0xC00) {
-		PS2_DIR = PS2_DIR_LEFT; // joystick left
-	} else if (PS2_X_DATA < 0x400) {
-		PS2_DIR = PS2_DIR_RIGHT; // joystick right
-	} else if (PS2_Y_DATA > 0xC00) {
-		PS2_DIR = PS2_DIR_UP; // joystick up
-	} else if (PS2_Y_DATA < 0x400) {
-		PS2_DIR = PS2_DIR_DOWN; // joystick down
-	} else {
-		PS2_DIR = PS2_DIR_CENTER;
-	}
-	return PS2_DIR;
+	PS2_DIR_t dir = PS2_DIR; //The new direction we will update PS2_DIR to in the ADC0 handler
+	
+  if(PS2_X_DATA > 0x0C00) //If the joystick is in the left position
+		dir = PS2_DIR_LEFT;
+	
+	else if(PS2_X_DATA < 0x0400) //If the joystick is in the right position
+		dir = PS2_DIR_RIGHT;
+	
+	else if(PS2_Y_DATA > 0x0C00) //If the joystick is in the up position
+		dir = PS2_DIR_UP;
+	
+	else if(PS2_Y_DATA < 0x0400) //If the joystick in the down position
+		dir = PS2_DIR_DOWN;
+	
+	else if(PS2_X_DATA > 0x0400 && PS2_X_DATA < 0x0C00) //If it's in the center
+		dir = PS2_DIR_CENTER;
+	
+	return dir;
+	
 }
 
 //*****************************************************************************
@@ -112,7 +119,7 @@ void TIMER3A_Handler(void){
 // TIMER4 ISR to trigger the ADC
 //*****************************************************************************
 void TIMER4A_Handler(void) {
-	// Trigger ADC Sample Sequencer 2 conversion
+	// Trigger ADC Sample Sequencer 2 handler
 	ADC0->PSSI |= ADC_PSSI_SS2;
 	
 	// Clear the interrupt
@@ -126,15 +133,15 @@ void TIMER4A_Handler(void) {
 //*****************************************************************************
 void ADC0SS2_Handler(void)
 {	
+	//Reading from sample sequencer 2's fifo
 	PS2_X_DATA = ADC0->SSFIFO2;
 	PS2_Y_DATA = ADC0->SSFIFO2;
+	
+	//Update direction
 	PS2_DIR = ps2_get_direction();
 	
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
-	
-	//Time to change the speed of the bear
-	ALERT_SPEED = true;
 }
 
 //*****************************************************************************
