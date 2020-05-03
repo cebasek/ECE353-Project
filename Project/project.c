@@ -393,8 +393,7 @@ void move_enemy(volatile uint16_t *x_coord){
 		randNum = rand() % 2; 
 		
 		if(randNum == 0){ //It'll be a stump!
-			//ENEMY_X_COORD = 240 - (stumpWidthPixels /2);
-			ENEMY_X_COORD = 239;
+			ENEMY_X_COORD = 240 - (stumpWidthPixels /2);
 			EnemyBitmaps = stumpBitmaps;
 			enemyWidthPixels = stumpWidthPixels;
 			enemyHeightPixels = stumpHeightPixels;
@@ -402,8 +401,7 @@ void move_enemy(volatile uint16_t *x_coord){
 		}
 		
 		else{ //It'll be a snowball!
-		  //ENEMY_X_COORD = 240 - (snowballWidthPixels /2);
-			ENEMY_X_COORD = 239;
+		  ENEMY_X_COORD = 240 - (snowballWidthPixels /2);
 			EnemyBitmaps = snowballBitmaps;
 			enemyWidthPixels = snowballWidthPixels;
 			enemyHeightPixels = snowballHeightPixels;
@@ -429,7 +427,7 @@ void move_enemy(volatile uint16_t *x_coord){
 // Returns true if it would be off screen, false if on screen
 //*****************************************************************************
 bool contact_edge_enemy(volatile uint16_t x_coord, uint8_t image_height, uint8_t image_width) {
-  if(x_coord <= 0) { //If we are about to be off screen
+  if((x_coord - (image_width / 2)) <= 0) { //If we are about to be off screen
 		return true;
 	}
 	
@@ -520,15 +518,15 @@ void game_main(void) {
 		ALERT_ENEMY = false;
 		
 		/* allows parts of enemy to render (vs. only full thing), can remove if you want */
-		if (ENEMY_X_COORD + (enemyWidthPixels/2) >= 240) { // enemy out of right edge
-			pixels_out_of_edge = (enemyWidthPixels/2) + (240 - ENEMY_X_COORD);
-			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
-		} else if (ENEMY_X_COORD - (enemyWidthPixels/2) <= 1) { // enemy out of left edge
-			pixels_out_of_edge = ENEMY_X_COORD + (enemyWidthPixels/2);
-			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
-		} else { // enemy within screen
-			pixels_out_of_edge = enemyWidthPixels;
-		}
+//		if (ENEMY_X_COORD + (enemyWidthPixels/2) >= 240) { // enemy out of right edge
+//			pixels_out_of_edge = (enemyWidthPixels/2) + (240 - ENEMY_X_COORD);
+//			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
+//		} else if (ENEMY_X_COORD - (enemyWidthPixels/2) <= 1) { // enemy out of left edge
+//			pixels_out_of_edge = ENEMY_X_COORD + (enemyWidthPixels/2);
+//			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
+//		} else { // enemy within screen
+//			pixels_out_of_edge = enemyWidthPixels;
+//		}
 		/* end */
 		
 		lcd_draw_image(ENEMY_X_COORD, pixels_out_of_edge, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
