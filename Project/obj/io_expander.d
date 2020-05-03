@@ -30,6 +30,7 @@
 .\obj\io_expander.o: ..\drivers\include\uart.h
 .\obj\io_expander.o: ..\peripherals\include\eeprom.h
 .\obj\io_expander.o: project.h
+.\obj\io_expander.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\obj\io_expander.o: project_images.h
 .\obj\io_expander.o: bitmap_db.h
 .\obj\io_expander.o: project_hardware_init.h

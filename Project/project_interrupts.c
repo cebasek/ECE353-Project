@@ -66,7 +66,21 @@ void TIMER1A_Handler(void){
 // TIMER2 ISR is triggered every 3 seconds and will add one point to the player's score
 //*****************************************************************************
 void TIMER2A_Handler(void){
-	TIMER2->ICR |= TIMER_ICR_TATOCINT; // Clear the interrupt
+	if (!GAME_RUNNING) {
+		CUR_SCORE = 0;
+	} else {
+		CUR_SCORE = CUR_SCORE + 1;
+	}
+	
+	if (CUR_SCORE > HIGH_SCORE) {
+		HIGH_SCORE = CUR_SCORE;
+	}
+	
+	printf("CUR SCORE: %d\t", CUR_SCORE);
+	printf("HIGH SCORE: %d\n", HIGH_SCORE);
+	
+	// Clear the interrupt
+	TIMER2->ICR |= TIMER_ICR_TATOCINT;
 }
 
 //*****************************************************************************
@@ -78,7 +92,7 @@ void TIMER2A_Handler(void){
 void TIMER3A_Handler(void){	
 	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
 	if(fgetcNB(stdin) != ' '){
-    printf("Running...\n\r");
+    //printf("Running...\n\r");
 	}
 	else{
 		while(fgetcNB(stdin) != ' '){

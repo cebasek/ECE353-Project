@@ -39,5 +39,9 @@ extern uint8_t *EnemyBitmaps;
 extern uint8_t enemyWidthPixels;
 extern uint8_t enemyHeightPixels;
 
+// Font data for Tahoma 16pt for high score
+extern const uint8_t tahoma_16ptBitmaps[];
+extern const FONT_INFO tahoma_16ptFontInfo;
+extern const FONT_CHAR_INFO tahoma_16ptDescriptors[];
 
 #endif

@@ -30,7 +30,6 @@ void init_hardware(void)
 	DisableInterrupts();
 	init_serial_debug(true, false);
 	EnableInterrupts();
-
 	
 	// LAUNCHPAD INIT
 	lp_io_init();
@@ -39,19 +38,19 @@ void init_hardware(void)
   lcd_config_gpio();
   lcd_config_screen();
 	ps2_initialize();
-	
 
 	//IO EXPANDER BUTTONS INIT
 	io_expander_init();
 	io_expander_write_reg(MCP23017_GPIOA_R, 0xFF);
 	config_buttons();
 	
+	// EEPROM FOR HIGH SCORE INIT
+	eeprom_init();
 
 	//TIMERS INIT
 	gp_timer_config_32(TIMER1_BASE,TIMER_TAMR_TAMR_PERIOD, 50000000, false, true); // Every 1 second
-	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1500000000, false, true); //Every 3 seconds
+	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 150000000, false, true); //Every 3 seconds
   gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true); // Every 1/60 seconds
-
 	
 	//TOUCH FUNCTIONALITY INIT
 	ft6x06_init();

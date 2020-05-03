@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "TM4C123.h"
 #include "gpio_port.h"
@@ -26,13 +27,15 @@ extern volatile uint16_t ENEMY_Y_COORD;
 
 
 extern volatile bool ALERT_BEAR;
+
 extern volatile bool ALERT_BUTTON;
 extern volatile bool ALERT_ENEMY;
 extern volatile bool ALERT_SPEED;
- 
+
+extern volatile uint8_t CUR_SCORE;
 extern volatile uint8_t HIGH_SCORE;
 extern volatile bool GAME_OVER;
-
+extern volatile bool GAME_RUNNING;
 
 
 //************************************************************************
@@ -50,6 +53,16 @@ void print_ready(void);
 //************************************************************************
 void print_countdown(void);
 
+//************************************************************************
+// Displays high score on startup
+//************************************************************************
+void print_high_score();
+
+//*****************************************************************************
+// Displays current score
+//*****************************************************************************
+void print_cur_score();
+	
 //************************************************************************
 // Will be the main game driver
 //************************************************************************

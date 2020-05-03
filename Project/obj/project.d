@@ -4,6 +4,7 @@
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\obj\project.o: C:\Users\Emily\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123.h
 .\obj\project.o: C:\Users\Emily\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123GH6PM.h
 .\obj\project.o: C:\Users\Emily\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\core_cm4.h

@@ -30,6 +30,7 @@
 .\obj\main.o: ..\peripherals\include\eeprom.h
 .\obj\main.o: ..\peripherals\include\io_expander.h
 .\obj\main.o: project.h
+.\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\obj\main.o: project_images.h
 .\obj\main.o: bitmap_db.h
 .\obj\main.o: project_hardware_init.h

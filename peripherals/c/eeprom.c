@@ -74,20 +74,28 @@ i2c_status_t eeprom_byte_write
 	// ADD CODE
   //==============================================================
 	status = i2cSetSlaveAddr(i2c_base, MCP24LC32AT_DEV_ID, I2C_WRITE);
-  
-  // If the EEPROM is still writing the last byte written, wait
+  if (status != I2C_OK) {
+		return status;
+	}
+	// If the EEPROM is still writing the last byte written, wait
   eeprom_wait_for_write(i2c_base);
   
   //==============================================================
   // Send the Upper byte of the address
 	// ADD CODE	
   //==============================================================
-	 status = i2cSendByte(i2c_base, address, I2C_MCS_START | I2C_MCS_RUN);
-  //==============================================================
+	status = i2cSendByte(i2c_base, address, I2C_MCS_START | I2C_MCS_RUN);
+  if (status != I2C_OK) {
+		return status;
+	}
+	//==============================================================
   // Send the Lower byte of the address
 	// ADD CODE
   //==============================================================
   status = i2cSendByte(i2c_base, address, I2C_MCS_RUN);
+	if (status != I2C_OK) {
+		return status;
+	}
   //==============================================================
   // Send the Byte of data to write
 	// ADD CODE
@@ -131,32 +139,40 @@ i2c_status_t eeprom_byte_read
 	// ADD CODE
   //==============================================================
 	status = i2cSetSlaveAddr(i2c_base, MCP24LC32AT_DEV_ID, I2C_WRITE);
-
+	if (status != I2C_OK) {
+		return status;
+	}
   //==============================================================
   // Send the Upper byte of the address
 	// ADD CODE
   //==============================================================
 	status = i2cSendByte(i2c_base, address, I2C_MCS_START | I2C_MCS_RUN);
-
+	if (status != I2C_OK) {
+		return status;
+	}
   //==============================================================
   // Send the Lower byte of the address
 	// ADD CODE
   //==============================================================
   status = i2cSendByte(i2c_base, address, I2C_MCS_STOP | I2C_MCS_RUN);
-
+	if (status != I2C_OK) {
+		return status;
+	}
   //==============================================================
   // Set the I2C slave address to be the EEPROM and in Read Mode
 	// ADD CODE
   //==============================================================
 	status = i2cSetSlaveAddr(i2c_base, MCP24LC32AT_DEV_ID, I2C_READ);
-
+	if (status != I2C_OK) {
+		return status;
+	}
   //==============================================================
   // Read the data returned by the EEPROM
 	// ADD CODE
   //==============================================================
   status = i2cGetByte(i2c_base, data, I2C_MCS_START | I2C_MCS_RUN | I2C_MCS_STOP);
 	
-  return I2C_OK;
+  return status;
 }
 
 //*****************************************************************************
