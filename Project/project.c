@@ -12,15 +12,28 @@ volatile uint16_t ENEMY_X_COORD = 240;
 volatile uint16_t ENEMY_Y_COORD = 240; //THIS WILL NEVER CHANGE
 
 
+typedef struct
+{
+    int top;
+    int bottom;
+    int left;
+    int right;
+} Rectangle;
+
+
 //CHANGE based on which enemy is currently on the screen
 uint8_t *EnemyBitmaps; 
 uint8_t enemyWidthPixels = 80;
 uint8_t enemyHeightPixels = 47;
+uint16_t ENEMY_COLOR;
 
 volatile bool ALERT_BEAR = true; //Set to true when we want to update the bear's position
 volatile bool ALERT_BUTTON = true; //Set to true when the push button is pressed
 volatile bool ALERT_ENEMY = true;
 volatile bool ALERT_SPEED = false;
+
+//Decrease when the bear hits an enemy
+volatile uint8_t SCORE = 0x1F;
 
 
 
@@ -50,7 +63,7 @@ void print_welcome(){
 //Start with blank blue screen
 lcd_clear_screen(LCD_COLOR_BLUE2);
 
-//Prints our welcome message in white
+//Prints our welcome message in blue
 for(i = 0; i < len_w; i++){
 	
 	  //If it's a space, just increment x and move to the next character
@@ -70,7 +83,7 @@ for(i = 0; i < len_w; i++){
 			int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 20;
 	   
-			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_BLUE, LCD_COLOR_BLUE2, 0);
 			x_start = x_start + width_bits + 2;
 	
 			if(x_start >= 220){
@@ -111,7 +124,7 @@ for(j = 0; j < len_i; j++){
 	 }
 }
 
-//Prints our continue message in white
+//Prints our continue message in blue
 for(k = 0; k < len_c; k++){
 	
 	  //If it's a space, just increment x and move to the next character
@@ -131,7 +144,7 @@ for(k = 0; k < len_c; k++){
 			int width_bits = lucidaCalligraphy_12ptDescriptors[descriptorOffset].widthBits;
 			int height_pixels = 20;
 	   
-			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_WHITE, LCD_COLOR_BLUE2, 0);
+			lcd_draw_char(x_start, width_bits, y_start, height_pixels, lucidaCalligraphy_12ptBitmaps + bitmapOffset, LCD_COLOR_BLUE, LCD_COLOR_BLUE2, 0);
 			x_start = x_start + width_bits + 2;
 	
 			if(x_start >= 220){
@@ -343,8 +356,7 @@ void move_enemy(volatile uint16_t *x_coord){
 	if(contact_edge_enemy(ENEMY_X_COORD, enemyHeightPixels, enemyWidthPixels)){
 		//Removes the image tht hit the edge of the screen
 		
-		//MYA HELP!!!! below I wanna draw a rectangle over the whole screen or where the enemy currently is
-		//lcd_draw_rectangle_centered(50, 150, 240, 150, LCD_COLOR_BLUE2);
+		//lcd_draw_rectangle_centered(ENEMY_X_COORD, , 240, 150, LCD_COLOR_BLUE2);
 		//Picks either 0 or 1
 		randNum = rand() % 2; 
 		
@@ -353,6 +365,7 @@ void move_enemy(volatile uint16_t *x_coord){
 			EnemyBitmaps = stumpBitmaps;
 			enemyWidthPixels = stumpWidthPixels;
 			enemyHeightPixels = stumpHeightPixels;
+			ENEMY_COLOR = LCD_COLOR_BROWN;
 		}
 		
 		else{ //It'll be a snowball!
@@ -360,6 +373,7 @@ void move_enemy(volatile uint16_t *x_coord){
 			EnemyBitmaps = snowballBitmaps;
 			enemyWidthPixels = snowballWidthPixels;
 			enemyHeightPixels = snowballHeightPixels;
+			ENEMY_COLOR = LCD_COLOR_WHITE;
 		}
 	}
 	
@@ -411,6 +425,41 @@ void update_speed(void){
 }
 
 //*****************************************************************************
+// Checks if there's an overlap between enemy and player and deducts from score
+// if so
+//*****************************************************************************
+void recalculate_score()
+{
+	//Represents the rectangle perimeter of the bear
+	Rectangle bear;
+	//Represents the rectangle perimeter of the current enemy
+	Rectangle enemy;
+	
+	bear.top = BEAR_Y_COORD - (bearHeightPixels/2);
+	bear.bottom = BEAR_Y_COORD + (bearHeightPixels/2);
+	bear.left = BEAR_X_COORD - (bearWidthPixels/2);
+	bear.right= BEAR_X_COORD + (bearWidthPixels/2);
+	
+	enemy.top = ENEMY_Y_COORD - (enemyHeightPixels/2);
+	enemy.bottom = ENEMY_Y_COORD + (enemyHeightPixels/2);
+	enemy.left = ENEMY_X_COORD - (enemyWidthPixels/2);
+	enemy.right= ENEMY_X_COORD + (enemyWidthPixels/2);
+	
+	//If one rectangle is on the complete left side of the other, no overlap
+	if(enemy.left > bear.right || bear.left > enemy.right)
+		return;
+	//If one rectangle is completely above the other, no overlap
+	if(enemy.top > bear.bottom || bear.top > enemy.bottom)
+		return;
+	
+	//If the above conditions are not met, they are overlapping
+	SCORE = (int)SCORE >> (int)1;
+	//Re-renders the red LEDs on the left to indicate how many lives are left
+	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
+  return;
+}
+
+//*****************************************************************************
 // Our main driver that is consitently called until the player loses
 //*****************************************************************************
 void game_main(void){
@@ -427,16 +476,18 @@ void game_main(void){
 		update_speed();
 	}
 	
-	//If it's time to re-render the bear
+	//If TIMER3A detects its time to re-render the bear and enemy
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
-		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLUE2);
+		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
 	}
-	
 	if(ALERT_ENEMY){
 		ALERT_ENEMY = false;
-		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BROWN, LCD_COLOR_BLUE2);
+		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
 	}
+	
+	//Recalculates score if an enemy is overlapping with the bear
+	recalculate_score();
 	
 	
 }

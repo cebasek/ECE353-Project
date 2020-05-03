@@ -32,7 +32,7 @@ bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
   #endif /* __BITMAP_DB_H_ */
 project_images.c: 1 warning, 0 errors
 compiling adc.c...
-compiling main.c...
+compiling project_interrupts.c...
 ..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
   extern i2c_status_t config_buttons();
 ..\peripherals\include\io_expander.h(104): warning:  #1295-D: Deprecated declaration io_expander_debounce - give arg types
@@ -45,7 +45,7 @@ project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give 
   void print_cur_score();
 project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
-main.c: 6 warnings, 0 errors
+project_interrupts.c: 6 warnings, 0 errors
 compiling project_hardware_init.c...
 ..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
   extern i2c_status_t config_buttons();
@@ -60,6 +60,34 @@ project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give 
 project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
   void game_main();
 project_hardware_init.c: 6 warnings, 0 errors
+compiling main.c...
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(104): warning:  #1295-D: Deprecated declaration io_expander_debounce - give arg types
+  extern bool io_expander_debounce();
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+project.h(59): warning:  #1295-D: Deprecated declaration print_high_score - give arg types
+  void print_high_score();
+project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give arg types
+  void print_cur_score();
+project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+main.c: 6 warnings, 0 errors
+compiling project.c...
+bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
+  #endif /* __BITMAP_DB_H_ */
+..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
+  extern i2c_status_t config_buttons();
+..\peripherals\include\io_expander.h(104): warning:  #1295-D: Deprecated declaration io_expander_debounce - give arg types
+  extern bool io_expander_debounce();
+project.h(59): warning:  #1295-D: Deprecated declaration print_high_score - give arg types
+  void print_high_score();
+project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give arg types
+  void print_cur_score();
+project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
+  void game_main();
+project.c: 6 warnings, 0 errors
 compiling io_expander.c...
 ..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
   extern i2c_status_t config_buttons();
@@ -80,34 +108,6 @@ io_expander.c(118): warning:  #550-D: variable "status"  was set but never used
 io_expander.c(166): warning:  #1-D: last line of file ends without a newline
   }
 io_expander.c: 9 warnings, 0 errors
-compiling project_interrupts.c...
-..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern i2c_status_t config_buttons();
-..\peripherals\include\io_expander.h(104): warning:  #1295-D: Deprecated declaration io_expander_debounce - give arg types
-  extern bool io_expander_debounce();
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-project.h(59): warning:  #1295-D: Deprecated declaration print_high_score - give arg types
-  void print_high_score();
-project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give arg types
-  void print_cur_score();
-project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-project_interrupts.c: 6 warnings, 0 errors
-compiling project.c...
-bitmap_db.h(47): warning:  #1-D: last line of file ends without a newline
-  #endif /* __BITMAP_DB_H_ */
-..\peripherals\include\io_expander.h(89): warning:  #1295-D: Deprecated declaration config_buttons - give arg types
-  extern i2c_status_t config_buttons();
-..\peripherals\include\io_expander.h(104): warning:  #1295-D: Deprecated declaration io_expander_debounce - give arg types
-  extern bool io_expander_debounce();
-project.h(59): warning:  #1295-D: Deprecated declaration print_high_score - give arg types
-  void print_high_score();
-project.h(64): warning:  #1295-D: Deprecated declaration print_cur_score - give arg types
-  void print_cur_score();
-project.h(69): warning:  #1295-D: Deprecated declaration game_main - give arg types
-  void game_main();
-project.c: 6 warnings, 0 errors
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
@@ -133,12 +133,13 @@ compiling accel.c...
 ..\peripherals\c\accel.c: 2 warnings, 0 errors
 compiling eeprom.c...
 compiling ft6x06.c...
-assembling ws2812b.s...
 compiling launchpad_io.c...
+assembling ws2812b.s...
 assembling startup_TM4C123.s...
 compiling ps2.c...
 compiling lcd.c...
 compiling spi_select.c...
+compiling system_TM4C123.c...
 compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(195): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
@@ -147,9 +148,8 @@ compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(234): warning:  #177-D: variable "c"  was declared but never referenced
   	char c;
 ..\peripherals\c\serial_debug.c: 3 warnings, 0 errors
-compiling system_TM4C123.c...
 linking...
-Program Size: Code=13440 RO-data=4860 RW-data=800 ZI-data=4128  
+Program Size: Code=13652 RO-data=4860 RW-data=816 ZI-data=4128  
 ".\obj\ece353_base_project.axf" - 0 Error(s), 43 Warning(s).
 
 <h2>Software Packages used:</h2>
