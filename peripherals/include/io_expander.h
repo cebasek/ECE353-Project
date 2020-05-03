@@ -86,7 +86,7 @@ extern uint8_t io_expander_read_reg(uint8_t);
 //************************************************************************
 // Configures the push buttons with I2C
 //************************************************************************
-extern i2c_status_t config_buttons();
+extern i2c_status_t config_buttons(void);
 
 //************************************************************************
 // Indicates which button was pressed
@@ -101,7 +101,7 @@ typedef enum{
 
 extern volatile BUTTON_t BUTTON_PRESSED; //The last pressed button
 
-extern bool io_expander_debounce();
+extern bool io_expander_debounce(void);
 
 
 #endif
