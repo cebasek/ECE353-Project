@@ -35,17 +35,17 @@
 //************************************************************************
 
 typedef enum{
-  SPEED_FAST,
+	SPEED_FAST,
 	SPEED_MEDIUM,
-	SPEED_SLOW
+	SPEED_SLOW,
 } SPEED_t;
 
 typedef enum{
-  PS2_DIR_UP,
+  PS2_DIR_RIGHT,
   PS2_DIR_DOWN,
   PS2_DIR_LEFT,
-  PS2_DIR_RIGHT,
   PS2_DIR_CENTER,
+	PS2_DIR_UP,
   PS2_DIR_INIT,
 } PS2_DIR_t;
 

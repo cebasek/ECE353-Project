@@ -31,8 +31,6 @@ void init_hardware(void)
 	init_serial_debug(true, false);
 	//EnableInterrupts();
 	
-	// LAUNCHPAD INIT
-	lp_io_init();
 	
 	//LCD INIT
   lcd_config_gpio();
@@ -54,5 +52,8 @@ void init_hardware(void)
 	
 	//TOUCH FUNCTIONALITY INIT
 	ft6x06_init();
+	
+	// LAUNCHPAD INIT
+	lp_io_init();
 }
 

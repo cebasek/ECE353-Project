@@ -29,36 +29,27 @@ Project File Date:  05/03/2020
 Rebuild target 'Project-F19'
 compiling project_images.c...
 compiling adc.c...
-compiling main.c...
-project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
-  extern SPEED_t update_speed();
-project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
-  bool contact_edge_enemy();
-main.c: 2 warnings, 0 errors
+..\drivers\c\adc.c(54): warning:  #188-D: enumerated type mixed with another type
+         return ADC0SS0_IRQn + ss_num;
+..\drivers\c\adc.c(58): warning:  #188-D: enumerated type mixed with another type
+         return ADC1SS0_IRQn + ss_num;
+..\drivers\c\adc.c(62): warning:  #188-D: enumerated type mixed with another type
+         return 0;
+..\drivers\c\adc.c(29): warning:  #177-D: function "verify_base_addr"  was declared but never referenced
+  static bool verify_base_addr(uint32_t baseAddr)
+..\drivers\c\adc.c: 4 warnings, 0 errors
 compiling project_hardware_init.c...
 project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
   extern SPEED_t update_speed();
 project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
   bool contact_edge_enemy();
 project_hardware_init.c: 2 warnings, 0 errors
-compiling project_interrupts.c...
-project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
-  bool contact_edge_enemy();
-project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
-  extern SPEED_t update_speed();
-project_interrupts.c: 2 warnings, 0 errors
-compiling project.c...
+compiling main.c...
 project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
   extern SPEED_t update_speed();
 project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
   bool contact_edge_enemy();
-project.c(454): warning:  #111-D: statement is unreachable
-  		return s;
-project.c(456): warning:  #940-D: missing return statement at end of non-void function "update_speed" 
-  }
-project.c(507): warning:  #177-D: variable "pixels_out_of_edge"  was declared but never referenced
-  	int pixels_out_of_edge;
-project.c: 5 warnings, 0 errors
+main.c: 2 warnings, 0 errors
 compiling io_expander.c...
 project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
   extern SPEED_t update_speed();
@@ -66,9 +57,33 @@ project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - gi
   bool contact_edge_enemy();
 io_expander.c(15): warning:  #550-D: variable "readReg"  was set but never used
   	uint8_t readReg; //temp variable used when clearing interrupts 
-io_expander.c(118): warning:  #550-D: variable "status"  was set but never used
+io_expander.c(94): warning:  #940-D: missing return statement at end of non-void function "io_expander_init" 
+  }
+io_expander.c(126): warning:  #550-D: variable "status"  was set but never used
   	i2c_status_t status; //just so we can set when we get byte
-io_expander.c: 4 warnings, 0 errors
+io_expander.c: 5 warnings, 0 errors
+compiling project_interrupts.c...
+project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
+  bool contact_edge_enemy();
+project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
+  extern SPEED_t update_speed();
+project_interrupts.c(33): warning:  #550-D: variable "reg"  was set but never used
+  	uint8_t reg;
+project_interrupts.c: 3 warnings, 0 errors
+compiling project.c...
+project_interrupts.h(56): warning:  #1295-D: Deprecated declaration update_speed - give arg types
+  extern SPEED_t update_speed();
+project.h(85): warning:  #1295-D: Deprecated declaration contact_edge_enemy - give arg types
+  bool contact_edge_enemy();
+project.c(413): warning:  #177-D: variable "i"  was declared but never referenced
+  	int i;
+project.c(482): warning:  #111-D: statement is unreachable
+  		return s;
+project.c(484): warning:  #940-D: missing return statement at end of non-void function "update_speed" 
+  }
+project.c(535): warning:  #177-D: variable "pixels_out_of_edge"  was declared but never referenced
+  	int pixels_out_of_edge;
+project.c: 6 warnings, 0 errors
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
@@ -92,24 +107,25 @@ compiling accel.c...
 ..\peripherals\c\accel.c(18): warning:  #177-D: function "accel_CSN_high"  was declared but never referenced
   static __INLINE void  accel_CSN_high(void)
 ..\peripherals\c\accel.c: 2 warnings, 0 errors
+compiling gptimer.c...
 compiling eeprom.c...
-compiling ft6x06.c...
-assembling startup_TM4C123.s...
 assembling ws2812b.s...
+compiling ft6x06.c...
 compiling launchpad_io.c...
+assembling startup_TM4C123.s...
+compiling lcd.c...
 compiling ps2.c...
+compiling spi_select.c...
 compiling serial_debug.c...
 ..\peripherals\c\serial_debug.c(195): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
 ..\peripherals\c\serial_debug.c(196): warning:  #177-D: variable "tx_buffer"  was declared but never referenced
      PC_Buffer *tx_buffer;
 ..\peripherals\c\serial_debug.c: 2 warnings, 0 errors
-compiling lcd.c...
-compiling spi_select.c...
 compiling system_TM4C123.c...
 linking...
-Program Size: Code=14012 RO-data=5196 RW-data=696 ZI-data=4128  
-".\obj\ece353_base_project.axf" - 0 Error(s), 23 Warning(s).
+Program Size: Code=14176 RO-data=5232 RW-data=696 ZI-data=4128  
+".\obj\ece353_base_project.axf" - 0 Error(s), 30 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -135,9 +151,9 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.2.0
 
    * Component: Keil::Device:Startup:1.0.1
+      Source file:   Device\Source\system_TM4C123.c
       Source file:   Device\Source\ARM\startup_TM4C123.s
       Include file:  Device\Include\TM4C123\TM4C123.h
-      Source file:   Device\Source\system_TM4C123.c
 Build Time Elapsed:  00:00:02
 </pre>
 </body>

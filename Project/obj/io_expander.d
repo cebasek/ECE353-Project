@@ -22,6 +22,7 @@
 .\obj\io_expander.o: ..\drivers\include\timers.h
 .\obj\io_expander.o: ..\peripherals\include\ps2.h
 .\obj\io_expander.o: ..\drivers\include\adc.h
+.\obj\io_expander.o: ..\peripherals\include\gptimer.h
 .\obj\io_expander.o: ..\peripherals\include\launchpad_io.h
 .\obj\io_expander.o: ..\peripherals\include\ft6x06.h
 .\obj\io_expander.o: ..\peripherals\include\serial_debug.h

@@ -23,43 +23,126 @@
 #include "adc.h"
 #include "driver_defines.h"
 
+//*****************************************************************************
+// Verifies that the base address is a valid GPIO base address
+//*****************************************************************************
+static bool verify_base_addr(uint32_t baseAddr)
+{
+   switch( baseAddr )
+   {
+     case ADC0_BASE:
+     case ADC1_BASE:
+     {
+       return true;
+     }
+     default:
+     {
+       return false;
+     }
+   }
+}
+
+/****************************************************************************
+ * Return the GPIO IRQ Number
+ ****************************************************************************/
+IRQn_Type adc_get_irq_num(uint32_t base, uint8_t ss_num)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return ADC0SS0_IRQn + ss_num;
+     }
+     case ADC1_BASE:
+     {
+       return ADC1SS0_IRQn + ss_num;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
+
+
+/****************************************************************************
+ * Return the RCGC Mask
+ ****************************************************************************/
+uint32_t adc_get_rcgc_mask(uint32_t base)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return SYSCTL_RCGCADC_R0;
+     }
+     case ADC1_BASE:
+     {
+       return SYSCTL_RCGCADC_R1;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
+
+
+/****************************************************************************
+ * Return the RCGC Mask
+ ****************************************************************************/
+uint32_t adc_get_pr_mask(uint32_t base)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return SYSCTL_PRADC_R0;
+     }
+     case ADC1_BASE:
+     {
+       return SYSCTL_PRADC_R1;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
+
 /******************************************************************************
- * Initializes ADC to use Sample Sequencer #3, triggered by the processor,
- * no IRQs
+ * Initializes ADC to use Sample Sequencer #3, triggered by software, no IRQs
  *****************************************************************************/
 bool initialize_adc(  uint32_t adc_base )
 {
-  ADC0_Type  *myADC;
+  ADC0_Type  *myADC;  
   uint32_t rcgc_adc_mask;
   uint32_t pr_mask;
-  
+	
+  if( adc_base == 0)
+  {
+    return false;
+  }
 
-  // examine the adc_base.  Verify that it is either ADC0 or ADC1
   // Set the rcgc_adc_mask and pr_mask  
   switch (adc_base) 
   {
     case ADC0_BASE :
     {
+      // Turn on the clock for ADC0
+      rcgc_adc_mask = SYSCTL_RCGCADC_R0;
       
-      // set rcgc_adc_mask
-			rcgc_adc_mask = SYSCTL_RCGCCAN_R0;
-              
-    
       // Set pr_mask 
-			pr_mask = SYSCTL_PRADC_R0;
-      
+      pr_mask =  SYSCTL_PRADC_R0;
       break;
     }
     case ADC1_BASE :
     {
-    
-      // set rcgc_adc_mask
-			rcgc_adc_mask = SYSCTL_RCGCCAN_R1;
+      // Turn on the clock for ADC1
+      rcgc_adc_mask = SYSCTL_RCGCADC_R1;
       
-     
       // Set pr_mask 
-      pr_mask = SYSCTL_PRADC_R1;
-			
+      pr_mask =  SYSCTL_PRADC_R1;
       break;
     }
     
@@ -72,26 +155,29 @@ bool initialize_adc(  uint32_t adc_base )
   
   // Wait for ADCx to become ready
   while( (pr_mask & SYSCTL->PRADC) != pr_mask){}
-    
-  // Type Cast adc_base and set it to myADC
+  
   myADC = (ADC0_Type *)adc_base;
   
-  // disable sample sequencer #3 by writing a 0 to the 
-  // corresponding ASENn bit in the ADCACTSS register 
+  // disable the sample sequencer by writing a 0 to the corresponding ASENn bit in the ADCACTSS register 
   myADC->ACTSS &= ~ADC_ACTSS_ASEN3;
 
-  // Set the event multiplexer to trigger conversion on a processor trigger
-  // for sample sequencer #3.
-  myADC->EMUX &= ~ADC_EMUX_EM3_M;
-  myADC->EMUX |= ADC_EMUX_EM3_PROCESSOR;
+  // Sequencer 3 is the lowest priority
+  myADC->SSPRI = ADC_SSPRI_SS3_4TH | ADC_SSPRI_SS2_3RD | ADC_SSPRI_SS1_2ND | ADC_SSPRI_SS0_1ST;
 
-  // ADD CODE
-  myADC->SSCTL3 |= ADC_SSCTL3_IE0;
-  myADC->SSCTL3 |= ADC_SSCTL3_END0;
+  myADC->EMUX &= ~ADC_EMUX_EM3_ALWAYS;
+
+  myADC->SSMUX3 &=  ~ADC_SSMUX3_MUX0_M;
+
+  myADC->SSCTL3 = ADC_SSCTL3_IE0 | ADC_SSCTL3_END0;
+
+  // Clear Averaging Bits
+  //myADC->SAC &= ~ADC_SAC_AVG_M  ;
+  
+  // Average 64 samples
+  //myADC->SAC |= ADC_SAC_AVG_64X;
   
   return true;
 }
-
 
 /******************************************************************************
  * Reads SSMUX3 for the given ADC.  Busy waits until completion

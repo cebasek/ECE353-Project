@@ -19,6 +19,7 @@
 .\obj\project.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
 .\obj\project.o: ..\peripherals\include\ps2.h
 .\obj\project.o: ..\drivers\include\adc.h
+.\obj\project.o: ..\peripherals\include\gptimer.h
 .\obj\project.o: ..\peripherals\include\lcd.h
 .\obj\project.o: ..\drivers\include\timers.h
 .\obj\project.o: project_images.h

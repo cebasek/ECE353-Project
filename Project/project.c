@@ -13,6 +13,8 @@ bool WAIT_SCORE = false;
 volatile uint16_t ENEMY_X_COORD = 320;
 volatile uint16_t ENEMY_Y_COORD = 228; //THIS WILL NEVER CHANGE
 
+volatile SPEED_t currSPEED;
+
 
 typedef struct
 {
@@ -51,8 +53,8 @@ volatile SPEED_t SPEED = SPEED_MEDIUM;
 // Prints a welcome message to the screen upon reset of game
 //************************************************************************
 void print_welcome(){
-	char welcome[] = "Welcome to Polar *Plunge!*";
-	char instructions[] = "Goal: avoid balls* and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down or right to*speed up*";
+	char welcome[] = "Welcome to Polar *Plunge!**";
+	char instructions[] = "Goal: avoid balls* and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down*";
 	char cont[] = "Touch the screen to*continue";
 	
 	int len_w = strlen(welcome);
@@ -476,29 +478,51 @@ void move_bear(volatile uint16_t *y_coord){
 		BUTTON_PRESSED = NONE_PRESSED; // so we can wait for another press
 		JUMPING = true;
 		ASCENDING = true; //start jump by asscending
+		currSPEED = SPEED; //Don't want to change jump speed mid-jump
 	}
 	
-	//If we are in the middle of a jump
+	//////////////////////IF WE ARE JUMPING//////////////////////////////////
 	if(JUMPING){
+		
 		//If we hit jump's peak, descend
-		if(*y_coord == 130)
+		if(*y_coord <= 130)
 			ASCENDING = false;
-			
-		//Ascent of jump 
-		if(ASCENDING) {
-			*y_coord = *y_coord - 1.5;
-			WAIT_SCORE = true;
+		
+		///////////////JUMP DEPENDS ON SPEED///////////////////////////////////
+		switch(currSPEED){
+			case SPEED_FAST:
+			  //Ascent of jump 
+		    if(ASCENDING)
+			    *y_coord = *y_coord - 3.5;
+		    //Descent of jump
+		    else if(!ASCENDING)
+			    *y_coord = *y_coord + 4.5;
+				break;
+					
+			case SPEED_SLOW:
+		    if(ASCENDING)
+			    *y_coord = *y_coord - 0.75;
+		    //Descent of jump
+		    else if(!ASCENDING)
+			    *y_coord = *y_coord + 1;
+				break;
+
+			default: //For medium speed
+		    if(ASCENDING)
+			    *y_coord = *y_coord - 1.5;
+		    //Descent of jump
+		    else if(!ASCENDING)
+			    *y_coord = *y_coord + 2;
+			 	break;
 		}
-		//Descent of jump
-		else if(!ASCENDING) {
-			*y_coord = *y_coord + 2;
-		}
+		////////////////////////////////////////////////////////////////
 		
 		//DONE with jump once we are at our original position
 		if(*y_coord == 200){
 			JUMPING = false;
 			BUTTON_PRESSED = NONE_PRESSED;
 		}
+		
 	}
 }
 //*****************************************************************************
@@ -507,6 +531,7 @@ void move_bear(volatile uint16_t *y_coord){
 //*****************************************************************************
 void move_enemy(volatile uint16_t *x_coord){
 	int randNum;
+	int i;
 	
 	//If the last enemy left the screen, generate a random new one
 	if(contact_edge_enemy()){
@@ -531,16 +556,16 @@ void move_enemy(volatile uint16_t *x_coord){
 		}
 	}
 	
+	
 	switch(SPEED){
 		case SPEED_FAST:
-			*x_coord = *x_coord - 10;
-		  break;
-		case SPEED_MEDIUM:
-			*x_coord = *x_coord - 1.25;
-		  break;
+			*x_coord = *x_coord - 3;
+			break;
 		case SPEED_SLOW:
-			*x_coord = *x_coord - 0.25;
+			*x_coord = *x_coord - 0.5;
 		  break;	
+		default: //USED for medium speed case
+			*x_coord = *x_coord - 1.25;
 		}
 }
 
@@ -642,9 +667,9 @@ void game_main(void) {
 	int pixels_out_of_edge;
 	GAME_RUNNING = true;
 	
-	//update_speed();
+
 	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
-	
+
 	//Renders our constant background
 	draw_snow();
 	
@@ -661,10 +686,6 @@ void game_main(void) {
 	}
 
   //If TIMER3A detects its time to re-render the bear and enemy
-	if(ALERT_BEAR){
-		ALERT_BEAR = false;
-		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
-	}
 	if(ALERT_ENEMY){
 		ALERT_ENEMY = false;
 		
@@ -685,10 +706,18 @@ void game_main(void) {
 			ENEMY_X_COORD = 320;
 		}
 		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
+		//Doing this here bc move_bear does not necessarily get called at the same time as this ldc_draw_image
+		//So it needs to disappear a bit before it hits the edge
+		//Cause we can't catch the moment it exactly hits the edge when contact_image is called in move_bear
     //If it's about to hit the edge, "erase" the image
-		if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 17){
+		if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 20){
 			lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
 		}
+	}
+	
+	if(ALERT_BEAR){
+		ALERT_BEAR = false;
+		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
 	}
 	
 	//Recalculates score if an enemy is overlapping with the bear

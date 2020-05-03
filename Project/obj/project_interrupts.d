@@ -21,6 +21,7 @@
 .\obj\project_interrupts.o: ..\drivers\include\timers.h
 .\obj\project_interrupts.o: ..\peripherals\include\ps2.h
 .\obj\project_interrupts.o: ..\drivers\include\adc.h
+.\obj\project_interrupts.o: ..\peripherals\include\gptimer.h
 .\obj\project_interrupts.o: ..\peripherals\include\launchpad_io.h
 .\obj\project_interrupts.o: ..\peripherals\include\ft6x06.h
 .\obj\project_interrupts.o: ..\drivers\include\i2c.h
