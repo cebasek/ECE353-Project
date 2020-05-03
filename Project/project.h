@@ -32,10 +32,14 @@ extern volatile bool ALERT_BUTTON;
 extern volatile bool ALERT_ENEMY;
 extern volatile bool ALERT_SPEED;
 
+extern volatile uint8_t SCORE;
 extern volatile uint8_t CUR_SCORE;
 extern volatile uint8_t HIGH_SCORE;
 extern volatile bool GAME_OVER;
 extern volatile bool GAME_RUNNING;
+extern volatile bool DEAD_SCREEN;
+extern volatile bool PLAY_AGAIN;
+extern bool WAIT_SCORE;
 
 
 //************************************************************************
@@ -58,10 +62,15 @@ void print_countdown(void);
 //************************************************************************
 void print_high_score(void);
 
-//*****************************************************************************
+//************************************************************************
 // Displays current score
-//*****************************************************************************
+//************************************************************************
 void print_cur_score(void);
+
+//************************************************************************
+// Displays "dead" screen, after player dies
+//************************************************************************
+void print_dead_screen(void);
 	
 //************************************************************************
 // Will be the main game driver
@@ -77,7 +86,6 @@ void move_bear(volatile uint16_t *y_coord);
 // Determines when to move the bear
 //************************************************************************
 void move_enemy(volatile uint16_t *x_coord);
-
 
 //************************************************************************
 // Determines when to move the bear
