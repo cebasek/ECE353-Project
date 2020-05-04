@@ -4,16 +4,18 @@
 #include "project_images.h"
 #include "project_interrupts.h"
 
-volatile uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
+const uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
 
 volatile uint8_t HIGH_SCORE = 0;
 bool WAIT_SCORE = false;
 
 volatile uint16_t ENEMY_X_COORD = 320;
-volatile uint16_t ENEMY_Y_COORD = 228; //THIS WILL NEVER CHANGE
+const uint16_t ENEMY_Y_COORD = 230; //THIS WILL NEVER CHANGE
 
 volatile SPEED_t currSPEED;
+
+volatile bool NEW_ENEMY = false;
 
 
 typedef struct
@@ -27,8 +29,8 @@ typedef struct
 
 //CHANGE based on which enemy is currently on the screen
 uint8_t *EnemyBitmaps; 
-uint8_t enemyWidthPixels = 80;
-uint8_t enemyHeightPixels = 47;
+uint8_t enemyWidthPixels = 0;
+uint8_t enemyHeightPixels = 0;
 uint16_t ENEMY_COLOR;
 
 // indicates if at the start of a new game
@@ -53,8 +55,8 @@ volatile SPEED_t SPEED = SPEED_MEDIUM;
 // Prints a welcome message to the screen upon reset of game
 //************************************************************************
 void print_welcome(){
-	char welcome[] = "Welcome to Polar *Plunge!**";
-	char instructions[] = "Goal: avoid balls* and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down*";
+	char welcome[] = "Welcome to Polar *Plunge!*";
+	char instructions[] = "Goal: avoid balls* and tree stumps*To play: Press the*right button to jump and move the*joystick left to slow down or right to* speed up*";
 	char cont[] = "Touch the screen to*continue";
 	
 	int len_w = strlen(welcome);
@@ -535,7 +537,8 @@ void move_enemy(volatile uint16_t *x_coord){
 	
 	//If the last enemy left the screen, generate a random new one
 	if(contact_edge_enemy()){
-		//Removes the image tht hit the edge of the screen
+		//NEW_ENEMY will remove our "ouch" rendering in main
+		NEW_ENEMY = true;
 		//Picks either 0 or 1
 		randNum = rand() % 2; 
 		
@@ -554,6 +557,7 @@ void move_enemy(volatile uint16_t *x_coord){
 			enemyHeightPixels = snowballHeightPixels;
 			ENEMY_COLOR = LCD_COLOR_WHITE;
 		}
+		
 	}
 	
 	
@@ -618,16 +622,20 @@ void recalculate_score()
 		SCORE = 0x1F;
 		return;
 	}
+	//////////////////////////////////////////////////////////////////////
+	//I'm going to take off a border of 10 pixels from each edge of both
+	//images to account for the white space padding in their bitmaps
+	//////////////////////////////////////////////////////////////////////
 	
-	bear.top = BEAR_Y_COORD - (bearHeightPixels/2);
-	bear.bottom = BEAR_Y_COORD + (bearHeightPixels/2);
-	bear.left = BEAR_X_COORD - (bearWidthPixels/2);
-	bear.right= BEAR_X_COORD + (bearWidthPixels/2);
+	bear.top = BEAR_Y_COORD - (bearHeightPixels/2) + 10;
+	bear.bottom = BEAR_Y_COORD + (bearHeightPixels/2) - 10;
+	bear.left = BEAR_X_COORD - (bearWidthPixels/2) + 10;
+	bear.right= BEAR_X_COORD + (bearWidthPixels/2) - 10;
 	
-	enemy.top = ENEMY_Y_COORD - (enemyHeightPixels/2);
-	enemy.bottom = ENEMY_Y_COORD + (enemyHeightPixels/2);
-	enemy.left = ENEMY_X_COORD - (enemyWidthPixels/2);
-	enemy.right= ENEMY_X_COORD + (enemyWidthPixels/2);
+	enemy.top = ENEMY_Y_COORD - (enemyHeightPixels/2) + 10;
+	enemy.bottom = ENEMY_Y_COORD + (enemyHeightPixels/2) - 10;
+	enemy.left = ENEMY_X_COORD - (enemyWidthPixels/2) + 10;
+	enemy.right= ENEMY_X_COORD + (enemyWidthPixels/2) - 10;
 	
 	//If one rectangle is on the complete left side of the other, no overlap
 	if(enemy.left > bear.right || bear.left > enemy.right)
@@ -646,7 +654,10 @@ void recalculate_score()
 	if (!WAIT_SCORE) {
 		SCORE = (int)SCORE >> (int)1;
 		WAIT_SCORE = true;
+		//Render the "ouch" picture
+		lcd_draw_image(140, ouchWidthPixels, 90, ouchHeightPixels, ouchBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2);
 	}
+
 
   return;
 }
@@ -655,7 +666,7 @@ void recalculate_score()
 // Draws the snow at the bottom of the screen
 //*****************************************************************************
 void draw_snow(void){
-	lcd_draw_rectangle_centered(120, 238, 260, 20, LCD_COLOR_WHITE);
+	lcd_draw_rectangle_centered(120, 238, 270, 35, LCD_COLOR_WHITE);
 	
 }
 
@@ -663,52 +674,45 @@ void draw_snow(void){
 // Our main driver that is consitently called until the player loses
 //*****************************************************************************
 void game_main(void) {
-	int wait;
-	int pixels_out_of_edge;
+	int wait; //use in loop below
 	GAME_RUNNING = true;
 	
-
+  //Updates the score on the RED leds 
 	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
 
 	//Renders our constant background
 	draw_snow();
 	
-	//If GPIOF detected a push button was pressed
+	////////////////////////////////////////////////////////////////////////////
+	/////////////////If GPIOF detected a push button was pressed////////////////
+	////////////////////////////////////////////////////////////////////////////
 	if (ALERT_BUTTON) {
 		ALERT_BUTTON = false;
 		io_expander_debounce();
 	}
 	
-	//If ADC0 detected movement in the joystick
+  ////////////////////////////////////////////////////////////////////////////
+	////////If ADC0 is triggered by Timer4A , update the bear's speed///////////
+	////////////////////////////////////////////////////////////////////////////
 	if (ALERT_SPEED) {
 		ALERT_SPEED = false;
 		SPEED = update_speed();
 	}
 
-  //If TIMER3A detects its time to re-render the bear and enemy
+  ////////////////////////////////////////////////////////////////////////////
+	//////If Timer3A detects its time to re-render the bear and enemy///////////
+	////////////////////////////////////////////////////////////////////////////
 	if(ALERT_ENEMY){
 		ALERT_ENEMY = false;
-		
-		/* allows parts of enemy to render (vs. only full thing), can remove if you want */
-//		if (ENEMY_X_COORD + (enemyWidthPixels/2) >= 240) { // enemy out of right edge
-//			pixels_out_of_edge = (enemyWidthPixels/2) + (240 - ENEMY_X_COORD);
-//			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
-//		} else if (ENEMY_X_COORD - (enemyWidthPixels/2) <= 1) { // enemy out of left edge
-//			pixels_out_of_edge = ENEMY_X_COORD + (enemyWidthPixels/2);
-//			lcd_draw_rectangle(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD - (enemyHeightPixels/2), enemyHeightPixels, LCD_COLOR_BLUE2);
-//		} else { // enemy within screen
-//			pixels_out_of_edge = enemyWidthPixels;
-//		}
-		/* end */
+		//Don't render the enemies right away
 		if (game_begin) {
 			game_begin = false;
 			for (wait = 0; wait < 9000000; wait++) {}
-			ENEMY_X_COORD = 320;
+			ENEMY_X_COORD = 238 - (enemyWidthPixels / 2);
 		}
 		lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, ENEMY_COLOR, LCD_COLOR_BLUE2);
 		//Doing this here bc move_bear does not necessarily get called at the same time as this ldc_draw_image
 		//So it needs to disappear a bit before it hits the edge
-		//Cause we can't catch the moment it exactly hits the edge when contact_image is called in move_bear
     //If it's about to hit the edge, "erase" the image
 		if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 20){
 			lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
@@ -718,6 +722,14 @@ void game_main(void) {
 	if(ALERT_BEAR){
 		ALERT_BEAR = false;
 		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	//////Internal signal asserted to indicate removal of "ouch" image//////////
+	////////////////////////////////////////////////////////////////////////////
+	if(NEW_ENEMY){
+		lcd_draw_image(140, ouchWidthPixels, 90, ouchHeightPixels, ouchBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
+		NEW_ENEMY = false;
 	}
 	
 	//Recalculates score if an enemy is overlapping with the bear

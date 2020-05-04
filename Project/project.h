@@ -19,11 +19,11 @@
 
 #include "main.h"
 
-extern volatile uint16_t BEAR_X_COORD; 
+extern const uint16_t BEAR_X_COORD; 
 extern volatile uint16_t BEAR_Y_COORD;
 
 extern volatile uint16_t ENEMY_X_COORD;
-extern volatile uint16_t ENEMY_Y_COORD;
+extern const uint16_t ENEMY_Y_COORD;
 
 
 extern volatile bool ALERT_BEAR;

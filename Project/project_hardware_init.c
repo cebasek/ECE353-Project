@@ -47,8 +47,8 @@ void init_hardware(void)
 	//TIMERS INIT
 	gp_timer_config_32(TIMER1_BASE,TIMER_TAMR_TAMR_PERIOD, 50000000, false, true); // Every 1 second
 	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 150000000, false, true); //Every 3 seconds
-  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true); // Every 1/60 seconds
-	gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true);
+  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true); 
+	gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true); //Every ms
 	
 	//TOUCH FUNCTIONALITY INIT
 	ft6x06_init();

@@ -54,4 +54,11 @@ extern const uint8_t tahoma_10ptBitmaps[];
 extern const FONT_INFO tahoma_10ptFontInfo;
 extern const FONT_CHAR_INFO tahoma_10ptDescriptors[];
 
+// Bitmap info for "Ouch!"
+extern const uint8_t ouchBitmaps[];
+extern const uint8_t ouchWidthPixels;
+extern const uint8_t ouchHeightPixels;
+
+
+
 #endif
