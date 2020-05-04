@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h>
 
 #include "TM4C123.h"
 #include "gpio_port.h"
@@ -44,7 +46,5 @@
 #include "project_images.h"
 
 #define EEPROM_ADDR    256
-
-extern volatile bool BLINK_LAUNCHPAD_LED;
 
 #endif

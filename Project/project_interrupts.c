@@ -20,7 +20,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "project_interrupts.h"
+#include "main.h"
 
 volatile uint16_t PS2_X_DATA = 0;
 volatile uint16_t PS2_Y_DATA = 0;

@@ -1,8 +1,4 @@
-#include "project.h"
 #include "main.h"
-#include "io_expander.h"
-#include "project_images.h"
-#include "project_interrupts.h"
 
 const uint16_t BEAR_X_COORD = 50; //THIS WILL NEVER CHANGE
 volatile uint16_t BEAR_Y_COORD = 200;
@@ -17,7 +13,6 @@ volatile SPEED_t currSPEED;
 
 volatile bool NEW_ENEMY = false;
 
-
 typedef struct
 {
     int top;
@@ -25,7 +20,6 @@ typedef struct
     int left;
     int right;
 } Rectangle;
-
 
 //CHANGE based on which enemy is currently on the screen
 uint8_t *EnemyBitmaps; 
@@ -532,7 +526,6 @@ void move_bear(volatile uint16_t *y_coord){
 //*****************************************************************************
 void move_enemy(volatile uint16_t *x_coord){
 	int randNum;
-	int i;
 	
 	//If the last enemy left the screen, generate a random new one
 	if(contact_edge_enemy()){
@@ -601,9 +594,8 @@ SPEED_t update_speed()
 		default: //used for center case
 			s = SPEED_MEDIUM;
 		  break;
-	
-		return s;
 	}
+	return s;
 }
 
 //*****************************************************************************

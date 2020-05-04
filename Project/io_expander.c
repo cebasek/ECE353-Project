@@ -80,17 +80,8 @@ bool io_expander_init(void) {
 	//Part 3. I2C Configuration
 	if(initializeI2CMaster(IO_EXPANDER_I2C_BASE) != I2C_OK)
 		return false;
-//Part 1: SCL Configuration
-//	gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN);
-//	gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PIN);
-//  gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SCL_PCTL_M, IO_EXPANDER_I2C_SCL_PIN_PCTL);
-//	
-//	//Part 2. SDA Configuration
-//	gpio_config_digital_enable(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
-//	gpio_config_open_drain(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
-//	gpio_config_alternate_function(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PIN);
-//	gpio_config_port_control(IO_EXPANDER_GPIO_BASE, IO_EXPANDER_I2C_SDA_PCTL_M, IO_EXPANDER_I2C_SDA_PIN_PCTL);
-//  initializeI2CMaster(IO_EXPANDER_I2C_BASE);
+	
+	return true;
 }
 
 /*******************************************************************************

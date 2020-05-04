@@ -21,8 +21,6 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
-#include "serial_debug.h"
-#include "io_expander.h"
 
 void init_hardware(void)
 {
