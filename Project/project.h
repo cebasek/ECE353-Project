@@ -40,6 +40,7 @@ extern volatile bool GAME_RUNNING;
 extern volatile bool DEAD_SCREEN;
 extern volatile bool PLAY_AGAIN;
 extern bool WAIT_SCORE;
+extern int16_t DUTY_CYCLE;
 
 
 //************************************************************************

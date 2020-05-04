@@ -233,7 +233,7 @@ void print_countdown() {
 	lcd_draw_rectangle(110, 29, 136, 48, LCD_COLOR_BLUE2); // draw over 2
 	for (i = 0; i < 6000000; i++) {}
 	lcd_draw_rectangle(181, 22, 136, 48, LCD_COLOR_BLUE2); // draw over 1
-	for (i = 0; i < 10000000; i++) {}
+	for (i = 0; i < 6000000; i++) {}
 }
 
 //*****************************************************************************
@@ -444,7 +444,6 @@ void print_dead_screen() {
 		if (touch_event > 0) {
 			touch_x = ft6x06_read_x();
 			touch_y = ft6x06_read_y();
-			printf("X: %d\t, Y: %d\n", touch_x, touch_y);
 			
 			// yes and no boxes
 			yes_box = (touch_x >= 47) && (touch_x <= 104);
@@ -645,19 +644,18 @@ void recalculate_score()
 	if(enemy.top > bear.bottom || bear.top > enemy.bottom)
 		return;
 	
+	//If the above conditions are not met, they are overlapping
+	if ((ENEMY_X_COORD - (enemyWidthPixels / 2)) >= (BEAR_X_COORD + (bearWidthPixels/2) - 26)) {
+		SCORE = (int)SCORE >> (int)1;
+		//Render the "ouch" picture
+		lcd_draw_image(140, ouchWidthPixels, 90, ouchHeightPixels, ouchBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2);
+	}
+	
+	// game over if score is zero
 	if (SCORE == 0) {
 		GAME_OVER = true;
 		DEAD_SCREEN = true;
 	}
-	
-	//If the above conditions are not met, they are overlapping
-	if (!WAIT_SCORE) {
-		SCORE = (int)SCORE >> (int)1;
-		WAIT_SCORE = true;
-		//Render the "ouch" picture
-		lcd_draw_image(140, ouchWidthPixels, 90, ouchHeightPixels, ouchBitmaps, LCD_COLOR_MAGENTA, LCD_COLOR_BLUE2);
-	}
-
 
   return;
 }
@@ -679,9 +677,14 @@ void game_main(void) {
 	
   //Updates the score on the RED leds 
 	io_expander_write_reg(MCP23017_GPIOA_R, SCORE);
-
+	
+	if(ALERT_BEAR){
+		ALERT_BEAR = false;
+		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
+	}
 	//Renders our constant background
 	draw_snow();
+	
 	
 	////////////////////////////////////////////////////////////////////////////
 	/////////////////If GPIOF detected a push button was pressed////////////////
@@ -717,11 +720,6 @@ void game_main(void) {
 		if((ENEMY_X_COORD - (enemyWidthPixels / 2)) <= 20){
 			lcd_draw_image(ENEMY_X_COORD, enemyWidthPixels, ENEMY_Y_COORD, enemyHeightPixels, EnemyBitmaps, LCD_COLOR_BLUE2, LCD_COLOR_BLUE2);
 		}
-	}
-	
-	if(ALERT_BEAR){
-		ALERT_BEAR = false;
-		lcd_draw_image(BEAR_X_COORD, bearWidthPixels, BEAR_Y_COORD, bearHeightPixels, bearBitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLUE2);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////

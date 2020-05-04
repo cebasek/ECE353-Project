@@ -25,6 +25,7 @@
 volatile uint16_t PS2_X_DATA = 0;
 volatile uint16_t PS2_Y_DATA = 0;
 volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
+int16_t DUTY_CYCLE = 0;
 
 //*****************************************************************************
 // GPIOF Sample Sequencer 2 ISR
@@ -68,18 +69,14 @@ PS2_DIR_t ps2_get_direction(void)
 // TIMER1 blinks the LED on the launchpad every 1 second
 //*****************************************************************************
 void TIMER1A_Handler(void){
-	// blink launchpad LED blue
-	if (BLINK_LAUNCHPAD_LED) {
-		lp_io_set_pin(BLUE_BIT); // LED on
-		BLINK_LAUNCHPAD_LED = false;
+	// breathe launchpad LED blue
+	static int count = 0;
+	if (count < DUTY_CYCLE) {
+		lp_io_set_pin(BLUE_BIT);
 	} else {
-		lp_io_clear_pin(BLUE_BIT); // LED off
-		BLINK_LAUNCHPAD_LED = true;
+		lp_io_clear_pin(BLUE_BIT);
 	}
-	
-	if (WAIT_SCORE) {
-		WAIT_SCORE = false;
-	}
+	count = (count + 1) % 100;
 	
 	// Clear the interrupt
 	TIMER1->ICR |= TIMER_ICR_TATOCINT;
@@ -109,10 +106,24 @@ void TIMER2A_Handler(void){
 // pauses the game
 //*****************************************************************************
 
-void TIMER3A_Handler(void){	
+void TIMER3A_Handler(void){
+	// launchpad LED breathe functionality
+	static bool inc;
+	if (DUTY_CYCLE == -15) {
+		inc = true;
+	} else if (DUTY_CYCLE == 100) {
+		inc = false;
+	}
+	
+	if (inc) {
+		DUTY_CYCLE = DUTY_CYCLE + 1;
+	} else {
+		DUTY_CYCLE = DUTY_CYCLE - 1;
+	}
+		
 	//Pauses game if space bar is hit, and prints to Putty interface the current status of the game
 	if(fgetcNB(stdin) != ' '){
-    //printf("Running...\n\r");
+    printf("Running...\n\r");
 	}
 	else{
 		while(fgetcNB(stdin) != ' '){
